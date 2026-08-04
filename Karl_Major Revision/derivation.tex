@@ -1,0 +1,67 @@
+\documentclass{article}
+\usepackage{amsmath} % Required for the align environment
+
+\begin{document}
+
+\subsection*{Baseline Superposition Principles}
+\begin{align}
+    B_{o1}(t) &= B'(t) + B''(t) \\
+    B_{o2}(t) &= B''(t) - B'(t) \\
+    B_c(t) &= B''(t)
+\end{align}
+
+\subsection*{Interval 1: $t_1 \le t < t_2$}
+\begin{align}
+    B'(t) &= \left( \frac{B'_{max}}{D T_s} \right) t \\
+    B''(t) &= \left( - \frac{B'_{max} n V_o}{V_{in\_max} D T_s} \right) t + B'_{max} \left[ 1 - \frac{n V_o}{V_{in\_max} D} (0.5 - D) \right] \\
+    B_{o1}(t) &= \frac{B'_{max}}{D T_s} \left( 1 - \frac{n V_o}{V_{in\_max}} \right) t + B'_{max} \left[ 1 - \frac{n V_o}{V_{in\_max} D} (0.5 - D) \right] \\
+    B_{o2}(t) &= - \frac{B'_{max}}{D T_s} \left( 1 + \frac{n V_o}{V_{in\_max}} \right) t + B'_{max} \left[ 1 - \frac{n V_o}{V_{in\_max} D} (0.5 - D) \right] \\
+    B_c(t) &= B''(t)
+\end{align}
+
+\subsection*{Interval 2: $t_2 \le t < t_3$}
+\begin{align}
+    B'(t) &= \left( \frac{B'_{max}}{D T_s} \right) t \\
+    B''(t) &= 0 \\
+    B_{o1}(t) &= B'(t) \\
+    B_{o2}(t) &= -B'(t) \\
+    B_c(t) &= 0
+\end{align}
+
+\subsection*{Interval 3: $t_3 \le t < t_4$}
+\begin{align}
+    B'(t) &= \left( - \frac{B'_{max} n V_o}{V_{in\_max} D T_s} \right) t + B'_{max} \left( 1 + \frac{n V_o}{V_{in\_max}} \right) \\
+    B''(t) &= 0 \\
+    B_{o1}(t) &= B'(t) \\
+    B_{o2}(t) &= -B'(t) \\
+    B_c(t) &= 0
+\end{align}
+
+\subsection*{Interval 4: $t_4 \le t < t_5$}
+\begin{align}
+    B'(t) &= \left( - \frac{B'_{max} n V_o}{V_{in\_max} D T_s} \right) t + B'_{max} \left( 1 + \frac{n V_o}{V_{in\_max}} \right) \\
+    B''(t) &= \left( \frac{B'_{max}}{D T_s} \right) t - \frac{0.5 B'_{max}}{D} \\
+    B_{o1}(t) &= \frac{B'_{max}}{D T_s} \left( 1 - \frac{n V_o}{V_{in\_max}} \right) t + B'_{max} \left( 1 + \frac{n V_o}{V_{in\_max}} - \frac{0.5}{D} \right) \\
+    B_{o2}(t) &= \frac{B'_{max}}{D T_s} \left( 1 + \frac{n V_o}{V_{in\_max}} \right) t - B'_{max} \left( 1 + \frac{n V_o}{V_{in\_max}} + \frac{0.5}{D} \right) \\
+    B_c(t) &= B''(t)
+\end{align}
+
+\subsection*{Interval 5: $t_5 \le t < t_6$}
+\begin{align}
+    B'(t) &= 0 \\
+    B''(t) &= \left( \frac{B'_{max}}{D T_s} \right) t - \frac{0.5 B'_{max}}{D} \\
+    B_{o1}(t) &= B''(t) \\
+    B_{o2}(t) &= B''(t) \\
+    B_c(t) &= B''(t)
+\end{align}
+
+\subsection*{Interval 6: $t_6 \le t < t_7$}
+\begin{align}
+    B'(t) &= 0 \\
+    B''(t) &= \left( - \frac{B'_{max} n V_o}{V_{in\_max} D T_s} \right) t + B'_{max} \left[ 1 + \frac{n V_o}{V_{in\_max} D} (0.5 + D) \right] \\
+    B_{o1}(t) &= B''(t) \\
+    B_{o2}(t) &= B''(t) \\
+    B_c(t) &= B''(t)
+\end{align}
+
+\end{document}
