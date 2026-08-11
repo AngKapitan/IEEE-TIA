@@ -9,7 +9,7 @@ import scipy.integrate as integrate
 # Electrical
 D = 0.4               # Duty cycle
 Ts = 1/100e3          # Switching period in seconds (10 us)
-B_max_prime = 0.20    # Peak flux density in Tesla
+B_max_prime = 0.15    # Peak flux density in Tesla
 n = 3.0               # Turns ratio
 Vo = 48.0             # Output voltage
 Vin_max = 100.0 * math.sqrt(2)  # Maximum input voltage
