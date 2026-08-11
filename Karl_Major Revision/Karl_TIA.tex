@@ -47,7 +47,7 @@
 \maketitle
 
 \begin{abstract}
-Universal serial bus power delivery (USB PD) is a widely-applied standard for electronic device charging. In 2021, USB PD 3.1 was announced with a variable output of 5 V to 48 V and a maximum output power of 240 W. A multi-phase flyback rectifier is capable of power factor correction, galvanic isolation, and wide output voltage range, and is proposed as an alternative topology for USB PD. However, the number of magnetic components increases with the number of phases, which can lead to lower power density. This paper proposes the design of a non-coupled integrated transformer for a two-phase interleaved flyback PFC rectifier to reduce the size and number of magnetic components. Independent operation of the two phases using the proposed transformer was verified through simulation and experiments using a 240-W prototype operating at 100 kHz in discontinuous conduction mode (DCM). After conducting a volume analysis through the area product (AP) method, the proposed transformer is estimated to achieve up to 56\% volume reduction compared to its conventional counterpart.
+Universal serial bus power delivery (USB PD) is a widely-applied standard for electronic device charging. In 2021, USB PD 3.1 was announced with a variable output of 5 V to 48 V and a maximum output power of 240 W. A multi-phase flyback rectifier is capable of power factor correction {\color{red}(PFC)}, galvanic isolation, and wide output voltage range, and is proposed as an alternative topology for USB PD. However, the number of magnetic components increases with the number of phases, which can lead to lower power density. This paper proposes the design of a non-coupled integrated transformer for a two-phase interleaved flyback PFC rectifier to reduce the size and number of magnetic components. Independent operation of the two phases using the proposed transformer was verified through simulation and experiments using a 240-W prototype operating at 100 kHz in discontinuous conduction mode (DCM). After conducting a volume analysis through the area product (AP) method, the proposed transformer is estimated to achieve up to {\color{red}16\%} volume reduction compared to its conventional{\color{red}, discrete} counterpart.
 \end{abstract}
 
 \begin{IEEEkeywords}
@@ -80,7 +80,7 @@ Several power supply configurations for USB PD have been proposed to meet the re
         \includegraphics[width=\columnwidth]{Figures_v2/Fig1c.pdf}
         \label{fig:1c}
         }
-        \caption{Power supply configurations proposed for PD applications: (a) PFC boost, LLC, and buck converter combination in \cite{ref3,ref4}, (b) PFC boost with AHB flyback \cite{ref1}, (c) two-phase interleaved flyback PFC rectifier.}
+        \caption{Power supply configurations proposed for PD applications: (a) PFC boost, LLC, and buck converter combination in \cite{ref3,ref4}, (b) PFC boost with AHB flyback \cite{ref1}, {\color{red}(c) two-phase interleaved flyback PFC rectifier.}}
         \label{fig:configurations}
 \end{figure}
 
@@ -88,11 +88,29 @@ Interleaving rectifiers have been considered to increase the maximum output powe
 
 Operating multi-phase flyback converters across a wide output range presents some challenges. For instance, to ensure high efficiency across wide-range applications, converters must commonly employ phase-shedding, for which various control schemes have been proposed \cite{Su_2013, Zhang_2013}, \cite{Chen_2014}. This strategy deactivates specific operational phases depending on the load condition to optimize light-load efficiency. However, the implementation of these control schemes often necessitates complicated designs and additional active components, thereby increasing the circuit complexity. 
 
-Moreover, increasing the number of phases inherently means an increase in the magnetic components required for the circuit. In the topology utilized for this study, although fewer active components are used overall, two discrete transformers are required, which compromises the power density of the converter. Integrated magnetics have been proposed and widely studied to improve the power density of various types of converters. Because integrated magnetics consolidate multiple discrete components through separate windings on a single magnetic core, these components inherently share the same flux paths. Consequently, the winding structure requires careful design to control magnetic flux. While magnetic coupling offers certain advantages, it introduces operational limitations. When mutual coupling exists between windings, the phases influence one another. In single-phase operation, when the phases are highly coupled, the active phase inevitably induces a voltage across the inactive phase, generating circulating currents that reduce light-load efficiency \cite{Yang_2020, Z_Li_2025}. Even under heavy-load conditions with multiple active phases, coupling can facilitate power delivery across non-operational phase intervals, leading to input current distortion and additional induced losses, therefore reducing overall efficiency \cite{Yang_2020}.
+Moreover, increasing the number of phases inherently means an increase in the magnetic components required for the circuit. In the topology utilized for this study, although fewer active components are used overall, two discrete transformers are required, which compromises the power density of the converter. Integrated magnetics have been proposed and widely studied to improve the power density of various types of converters. Because integrated magnetics consolidate multiple discrete components through separate windings on a single magnetic core, these components inherently share the same flux paths. Consequently, the winding structure requires careful design to control magnetic flux. While magnetic coupling offers certain advantages, it introduces operational limitations. When mutual coupling exists between windings, the phases influence one another. {\color{red}In some coupled  topologies, utilizing phase-shedding for single-phase operation at light loads induces a voltage across the inactive phase. This generates circulating currents that degrade light-load efficiency \cite{Yang_2020, Z_Li_2025}.} Even under heavy-load conditions with multiple active phases, coupling can facilitate power delivery across non-operational phase intervals, leading to input current distortion and additional induced losses, therefore reducing overall efficiency \cite{Yang_2020}.
 
 For heavy-load applications, however, magnetic coupling can be beneficial. Coupling passively forces current equalization and minimizes capacitive current ripple, while the integrated structure improves power density. This intentional coupling is utilized in fixed-load server power supplies and LLC resonant converters \cite{Ahmad}, \cite{Dou, Nakakohara}. Furthermore, modern interleaved flybacks require additional active switching devices for clamp circuits to ensure this current sharing \cite{Z_Chen_s42835}. Ultimately, while coupled magnetic structures are effective for fixed heavy-load targets, they conflict with the independent phase operation required by wide-range, variable-power converters. Other integrated structures are designed for alternative objectives, such as noise reduction via active cancellation within the windings \cite{Jin_2024}.
 
 Structural decoupling approaches have been explored to bypass these circulating currents and accommodate the variable-load requirements of USB PD, offering an alternative to control-based phase shedding. One approach proposes a four quadrants integrated transformer (FQIT) for a two-phase converter. This design decouples phases by separating the flux paths using a 3-D orthogonal-flux core geometry \cite{Ouyang}. However, this custom core constrains commercial manufacturability and increases fabrication costs. Another proposed solution is an integrated nonlinear coupled inductor designed to decouple four phases at light loads \cite{Z_Li_2025}. Achieving this variable coupling requires customized, multi-piece L- and T-shaped core assemblies with manually configured geometries, introducing tight assembly tolerances and manufacturing complexity.
+
+\begin{table*}[htbp]
+    \caption{Comparison of Magnetic Structures for Interleaved Converters}
+    \centering
+    \footnotesize
+    \begin{tabular}{lcccc}
+        \hline
+        \textbf{Characteristic} & \textbf{Discrete} & \textbf{Coupled Integrated} \cite{ishihara2015} & \textbf{Custom 3D / Multi-Piece} \cite{18, 24} & \textbf{Proposed} \\
+        \hline \hline
+        \textbf{Number of Cores} & 2 & 1 & 1 & \textbf{1} \\
+        \textbf{Core Geometry Complexity} & Simple (Standard) & Simple (Standard) & High (Custom) & \textbf{Simple (Standard EE)} \\
+        \textbf{Inter-phase Magnetic Coupling} & None & High ($k \ge 0.6$) & None & \textbf{None ($k \approx 0.0005$)} \\
+        \textbf{Independent Phase Operation} & Yes & No (Circulating currents) & Yes & \textbf{Yes} \\
+        \textbf{Manufacturing Suitability} & High & High & Low (Tight tolerances) & \textbf{High} \\
+        \hline
+    \end{tabular}
+    \label{tab:comparison}
+\end{table*}
 
 This paper proposes a non-coupled integrated transformer for a two-phase interleaved flyback rectifier as shown in Fig. \ref{fig:2a} to address these limitations. The structure is designed to achieve zero magnetic coupling between phases, ensuring independent phase operation without magnetic interference. The proposed winding structure is shown in Fig. \ref{fig:2b} where $N_{ab}$ is the number of turns between terminals $a$ and $b$. Half of $N_{12}$ and $N_{34}$ are wound at each outer leg with opposite polarity, so as to allow for flux cancellation at the center leg. On the other hand, $N_{56}$ and $N_{78}$ are also wound with opposite polarity on the center leg, and allows for the transformer $N_{12}$ and $N_{34}$ to not operate during its operation. 
 
@@ -117,19 +135,17 @@ The zero-coupling coefficient between the two separate transformers simplifies i
 This article is an extended research of \cite{ECCE}. The preliminary study in \cite{ECCE} focused on the foundational design and experimental validation of the non-coupled integrated transformer. Key additions include a more detailed theoretical analysis, simulation validation of the operational principle, transformer design methodology including air-gap design, and a comprehensive core volume analysis utilizing the area product (AP) method. The rest of this paper is organized as follows: Section II presents an operational analysis of a two-phase interleaved flyback rectifier with the integrated transformer, along with its design method. Section III describes the size reduction effect of the transformer. Sections IV and V discuss the results of the simulation and experimental verification respectively, and Section VI presents the conclusions of this paper.
 
 \section{Design Method of the Proposed Transformer}
-
 \subsection{Operation Analysis of the Proposed Flyback Rectifier and Transformer}
-The proposed integrated transformer, shown in Fig. \ref{fig:2b} was designed for a two-phase interleaved flyback PFC rectifier, shown in Fig. \ref{fig:2a} operating in discontinuous conduction mode (DCM). The switches ($S_1$, $S_2$ in Fig. \ref{fig:2a}) operate with a fixed duty cycle $D$ and a 180-degree phase shift.
+The proposed integrated transformer, shown in Fig. \ref{fig:2b} was designed for a two-phase interleaved flyback PFC rectifier, shown in Fig. \ref{fig:2a} operating in discontinuous conduction mode (DCM). The switches ($S_1$, $S_2$ in Fig. \ref{fig:2a}) operate with a fixed duty cycle $D${\color{red}, fixed switching frequency $f_\mathrm{s}$,} and a 180-degree phase shift. {\color{red}The input capacitor $C_\mathrm{in}$ acts as a high-frequency filter to bypass the switching current ripple. Because it is connected directly after the bridge diode, the voltage across $C_\mathrm{in}$ inherently follows the rectified AC line voltage. Therefore, its required voltage rating must be selected to safely exceed the peak AC input voltage.}
 
-Half of $N_{12}$ and $N_{34}$ are wound at each outer leg with opposite polarity. Moreover, $N_{56}$ and $N_{78}$ are also wound with opposite polarity at the center leg. The transformer utilized an EE core with a center leg that has a cross sectional area twice its outer leg, in accordance with conventional manufacturing specifications. The magnetizing inductances for both transformers $N_{12}-N_{34}$ and $N_{56}-N_{78}$ were set to be equal, and are denoted as $L_{\mathrm{m}_1}$ and $L_{\mathrm{m}_2}$ respectively. The saturation magnetic flux in each separate transformer during each phase is expected to be consistent.
+Half of $N_{12}$ and $N_{34}$ are wound at each outer leg with opposite polarity. Moreover, $N_{56}$ and $N_{78}$ are also wound with opposite polarity at the center leg. {\color{red} It should be noted that Fig. \ref{fig:2b} is a simplified representation of the winding structure, so that the location and direction of each winding can be easily pinpointed.} The transformer utilizes an EE core with a center leg that has a cross-sectional area twice its outer leg, in accordance with manufacturing specifications. The magnetizing inductances for both transformers $N_{12}-N_{34}$ and $N_{56}-N_{78}$ were set to be equal, and are denoted as $L_{\mathrm{m}_1}$ and $L_{\mathrm{m}_2}$ respectively. The saturation magnetic flux in each separate transformer during each phase is expected to be consistent.
 
-The operational principle of the rectifier with the proposed transformer is illustrated in Fig. \ref{fig:operation_modes}. Additionally, Fig. \ref{fig:4} presents the key waveforms of the six distinct operation modes. The rectifier is designed with duty cycle $D \le 0.5 \frac{n V_{\mathrm{o}}}{V_{\mathrm{in}_{\mathrm{max}}}}$ with $n$ as the turns ratio, $V_{\mathrm{o}}$ as the output voltage, and $V_{\mathrm{in}_{\mathrm{max}}}$ as the peak value of the input voltage. This condition ensures the magnetizing current of one phase returns to zero before the other phase peaks. This duration is defined as the discharge time $t_{\mathrm{dis}}$ and is given in terms of circuit parameters by \eqref{eq:discharge}:
+The operational principle of the rectifier with the proposed transformer is illustrated in Fig. \ref{fig:operation_modes}. Additionally, Fig. \ref{fig:4} presents the key waveforms of the six distinct operation modes. {\color{red} The operation modes are examined under six-time intervals relative to the switching period of $S_1$.} The rectifier is designed with $D \le 0.5 \frac{n V_{\mathrm{o}}}{V_{\mathrm{in}_{\mathrm{max}}}}$ with $n$ as the turns ratio, $V_{\mathrm{o}}$ as the output voltage, and $V_{\mathrm{in}_{\mathrm{max}}}$ as the peak value of the input voltage. This condition ensures the magnetizing current of one phase returns to zero before the other phase peaks. This duration is defined as the discharge time $t_{\mathrm{dis}}$ and is given in terms of circuit parameters by \eqref{eq:discharge}:
 
 \begin{figure*}[htbp]
     \centering
     
     % --- LEFT COLUMN (Modes 1, 2, 3) ---
-    % These will automatically get labels (a), (b), (c)
     \begin{minipage}{0.48\textwidth}
         \centering
         
@@ -137,21 +153,20 @@ The operational principle of the rectifier with the proposed transformer is illu
             \includegraphics[width=\linewidth]{Figures_v2/Fig3a.pdf}%
         }
         
-        \vspace{10pt} % Spacing between Mode 1 and 2
+        \vspace{10pt} 
         
         \subfloat[\label{fig:mode_2}]{%
             \includegraphics[width=\linewidth]{Figures_v2/Fig3b.pdf}%
         }
         
-        \vspace{10pt} % Spacing between Mode 2 and 3
+        \vspace{10pt} 
         
         \subfloat[\label{fig:mode_3}]{%
             \includegraphics[width=\linewidth]{Figures_v2/Fig3c.pdf}%
         }
     \end{minipage}
-    \hfill % Horizontal space between the two columns
+    \hfill
     % --- RIGHT COLUMN (Modes 4, 5, 6) ---
-    % These will automatically get labels (d), (e), (f)
     \begin{minipage}{0.48\textwidth}
         \centering
         
@@ -185,66 +200,21 @@ with $T_{\mathrm{s}}$ as the switching period. For the condition given by $D$ in
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=\columnwidth]{Figures_v2/Fig4.pdf}
-
-\caption{Key waveforms in the operation of the two-phase interleaved flyback rectifier with the proposed transformer, with $D \le 0.5 \frac{n V_{\mathrm{o}}}{V_{\mathrm{in}_{\mathrm{max}}}}$. }
+\caption{Key waveforms in the operation of the two-phase interleaved flyback rectifier with the proposed transformer, with $D \le 0.5 \frac{n V_{\mathrm{o}}}{V_{\mathrm{in}_{\mathrm{max}}}}$. {\color{red} $S_1$ and $S_2$ operate $180^\circ$ out of phase and have the same $T_{\mathrm{s}}$. The flux densities $B'$ and $B''$ represent the individual, un-superimposed magnetic flux components generated in the first and second active phase by $N_{12}-N_{34}$ and $N_{56}-N_{78}$ respectively.}}
 \label{fig:4}
 \end{figure}
 
-To describe the magnetic state of the core, the superposition principle is used, as shown in Fig. \ref{fig:5a}. The magnetic flux density component $B'$ is generated by the positive cycle transformer defined as $N_{12}-N_{34}$. The magnetic flux density component $B''$ represents the component generated by the negative cycle transformer defined as $N_{56}-N_{78}$. The total flux in any leg is the algebraic sum of these components. This superposition determines the peak flux density required for the core design, which is analyzed in detail in Section II-B.
+To describe the magnetic state of the core, the superposition principle is used, as shown in Fig. \ref{fig:5a}. The magnetic flux density component $B'$ is generated by the {\color{red} transformer active in the first phase} defined as $N_{12}-N_{34}$. The magnetic flux density component $B''$ represents the component generated by the {\color{red} transformer active in the second phase} defined as $N_{56}-N_{78}$. The total flux in any leg is the algebraic sum of these components. This superposition determines the peak flux density required for the core design, {\color{red} which is analyzed in detail} in Section II-B.
 
-Modes 1, 2, and 3 in Figs. \ref{fig:mode_1}-(c) cover the operation during the positive AC input into the rectifier, while Modes 4, 5, and 6 in Figs. \ref{fig:mode_4}-(f) describe the operation during the negative AC input. For the following modes, $B'_{\mathrm{o}_1}$, $B'_{\mathrm{o}_2}$ and $B'_{\mathrm{c}}$ represent the magnetic flux densities in the respective left, right, and center legs of the core caused by the transformer active in positive AC input $N_{12}-N_{34}$, respectively, which are shown in Fig. \ref{fig:5b}. On the other hand, $B''_{\mathrm{o}_1}$, $B''_{\mathrm{o}_2}$ and $B''_{\mathrm{c}}$ represent the magnetic flux densities in the respective left, right, and center legs of the core caused by the transformer active in negative AC input $N_{56}-N_{78}$, respectively, which are detailed visually in Fig. \ref{fig:5c}.
-
-The detailed analysis of each operating mode is as follows:
-
-
-\begin{enumerate}
-    \item Mode 1 ($t_1 < t < t_2$, Fig. \ref{fig:mode_1}): At time $t_1$, switch $S_1$ turns on and $S_2$ remains off. The transformer $N_{12}-N_{34}$ begins storing energy in its magnetizing inductance. Its magnetizing current $i_{L_{\mathrm{m}_1}}$ and the corresponding flux densities in the outer legs $B'_{\mathrm{o}_1}$ and $B'_{\mathrm{o}_2}$ linearly increase from zero. Simultaneously, transformer $N_{56}-N_{78}$ completes its discharge phase, with its magnetizing current $i_{L_{\mathrm{m}_2}}$ and secondary diode current $i_{\mathrm{D}_2}$ decreasing to zero at $t_2$.
-
-    \item Mode 2 ($t_2 < t < t_3$, Fig. \ref{fig:mode_2}): Mode 2 starts right after transformer $N_{56}-N_{78}$ completes its discharging phase, which means its associated currents $i_{\mathrm{D}_2}$, $i_{L_{\mathrm{m}_2}}$, and flux densities $B''_{\mathrm{o}_1}$, $B''_{\mathrm{o}_2}$, and $B''_{\mathrm{c}}$ are zero. Now, with $S_1$ still on, transformer $N_{12}-N_{34}$ continues storing energy until $i_{L_{\mathrm{m}_1}}$ reaches its peak value at $t_3$. The peak primary current in the positive cycle $i_{\mathrm{S}_{1_{\mathrm{pk}}}}$ is given by \eqref{eq:1}:
-    \begin{equation}
-    \label{eq:1}
-    i_{\mathrm{S}_{1_{\mathrm{pk}}}} = \frac{V_{\mathrm{in}} \cdot DT_{\mathrm{s}}}{L_{\mathrm{m}_1}}
-    \end{equation}
-    where $V_{\mathrm{in}}$ is the input voltage, $D$ is the duty cycle, $T_{\mathrm{s}}$ is the switching period, and $L_{\mathrm{m}_1}$ is the magnetizing inductance of transformer $N_{12}-N_{34}$. Consequently, the flux densities $B'_{\mathrm{o}_1}$ and $B'_{\mathrm{o}_2}$ also reach their peak values $B'_{\mathrm{o}_{\mathrm{pk}}}$, which are given by \eqref{eq:2}:
-    \begin{equation}
-    \label{eq:2}
-    B'_{\mathrm{o}_{\mathrm{pk}}} = \frac{L_{\mathrm{m}_1} i_{\mathrm{S}_{1_{\mathrm{pk}}}}}{N_{12} A_{\mathrm{o}}}
-    \end{equation}
-    with $N_{12}$ as the number of turns in the primary side of the active transformer and $A_{\mathrm{o}}$ is the cross-sectional area of the outer leg, where the transformer $N_{12}-N_{34}$ is wound.
-
-    \item Mode 3 ($t_3 < t < t_4$, Fig. \ref{fig:mode_3}): Mode 3 starts right after transformer $N_{12}-N_{34}$ finishes charging. At $t_3$, Switch $S_1$ turns off, initiating the discharge phase of transformer $N_{12}-N_{34}$. The magnetizing current $i_{L_{\mathrm{m}_1}}$, diode current $i_{\mathrm{D}_1}$, and flux densities $B'_{\mathrm{o}_1}$ and $B'_{\mathrm{o}_2}$ begin to decrease linearly. Transformer $N_{56}-N_{78}$ remains inactive in this period.
-\end{enumerate}
-
-In Modes 1-3, the magnetomotive force and magnetic resistance of both outer legs are equal. The magnetic flux in the center leg is canceled. This causes no electromotive force generated in transformer $N_{56}-N_{78}$. Therefore, the transformer formed by the outer legs operates independently from the transformer in the center leg. The integrated transformer is equivalent to that of Fig. \ref{fig:5b} and its equivalent magnetic circuit is shown in Fig. \ref{fig:6}(a).
-
-\begin{enumerate}
-    \setcounter{enumi}{3} % Ensures the numbering continues from 4
-    \item Mode 4 ($t_4 < t < t_5$, Fig. \ref{fig:mode_4}): Mode 4 operates similarly to the positive cycle. Switch $S_2$ turns on at $t_4$ and $S_1$ remains off. Transformer $N_{56}-N_{78}$ stores energy in its magnetizing inductance. Its current $i_{L_{\mathrm{m}_2}}$ and the corresponding flux densities $B''_{\mathrm{o}_1}$, $B''_{\mathrm{c}}$, and $B''_{\mathrm{o}_2}$ linearly increase. Simultaneously, transformer $N_{12}-N_{34}$ completes its discharge phase, with $i_{L_{\mathrm{m}_1}}$ and $i_{\mathrm{D}_1}$ decreasing to zero at $t_5$.
-
-    \item Mode 5 ($t_5 < t < t_6$, Fig. \ref{fig:mode_5}): Mode 5 starts after the discharge of transformer $N_{12}-N_{34}$ completes. Now, with Switch $S_2$ still on, transformer $N_{56}-N_{78}$ continues storing energy until $i_{L_{\mathrm{m}_2}}$ reaches its peak value at $t_6$. The peak primary current in the negative cycle $i_{\mathrm{S}_{2_{\mathrm{pk}}}}$ is given by \eqref{eq:3}:
-    \begin{equation}
-    \label{eq:3}
-    i_{\mathrm{S}_{2_{\mathrm{pk}}}} = \frac{V_{\mathrm{in}} \cdot DT_{\mathrm{s}}}{L_{\mathrm{m}_2}}
-    \end{equation}
-    where $L_{\mathrm{m}_2}$ is the magnetizing inductance of transformer $N_{56}-N_{78}$. Consequently, the flux densities $B''_{\mathrm{o}_1}$, $B''_{\mathrm{c}}$, and $B''_{\mathrm{o}_2}$ also reach their peak values. The peak value of $B''_{\mathrm{c}_{\mathrm{pk}}}$ is given by \eqref{eq:4}:
-    \begin{equation}
-    \label{eq:4}
-    B''_{\mathrm{c}_{\mathrm{pk}}} = B''_{\mathrm{o}_{\mathrm{pk}}} = \frac{L_{\mathrm{m}_2} i_{\mathrm{S}_{2_{\mathrm{pk}}}}}{N_{56} A_{\mathrm{c}}}
-    \end{equation}
-    with $N_{56}$ as the number of turns in the primary side of the active transformer and $A_{\mathrm{c}}$ is the cross-sectional area of the center leg where the transformer $N_{56}-N_{78}$ is wound.
-
-    \item Mode 6 ($t_6 < t < t_7$, Fig. \ref{fig:mode_6}): Switch $S_2$ turns off, initiating the discharge phase of transformer $N_{56}-N_{78}$. The currents $i_{L_{\mathrm{m}_2}}, i_{\mathrm{D}_2},$ and flux densities $B''_{\mathrm{o}_1}$, $B''_{\mathrm{c}}$, and $B''_{\mathrm{o}_2}$ begin to decrease linearly. Transformer $N_{12}-N_{34}$ remains inactive.
-\end{enumerate}
+Modes 1, 2, and 3 in Figs. \ref{fig:mode_1}-(c) cover the operation during the {\color{red} first active phase}, while Modes 4, 5, and 6 in Figs. \ref{fig:mode_4}-(f) describe the operation during the {\color{red} second active phase}. {\color{red} The six modes are examined under the switching period $T_{\mathrm{s}}$ of $S_1$.} For the following modes, $B'_{\mathrm{o}_1}$, $B'_{\mathrm{o}_2}$, and $B'_{\mathrm{c}}$ represent the magnetic flux densities in the respective left, right, and center legs of the core caused by $N_{12}-N_{34}$, respectively, which are shown in Fig. \ref{fig:5b}. On the other hand, $B''_{\mathrm{o}_1}$, $B''_{\mathrm{o}_2}$, and $B''_{\mathrm{c}}$ represent the magnetic flux densities in the respective left, right, and center legs of the core caused by $N_{56}-N_{78}$, respectively, which are detailed visually in Fig. \ref{fig:5c}. {\color{red}The flux paths in the core caused by each transformer across the operational analysis illustrated in Fig. \ref{fig:operation_modes} are illustrated in Fig. \ref{fig:6}.}
 
 \begin{figure}[b!]
 \centering
-% (a) Top circuit
         \subfloat[]{
-        \includegraphics[width=0.6\columnwidth]{Figures_v2/Fig5a.pdf} % Make sure this file exists
+        \includegraphics[width=0.6\columnwidth]{Figures_v2/Fig5a.pdf} 
         \label{fig:5a}
         }
-        \\ % This double backslash forces the next image to the line below (vertical stack)
-        % (b) Middle circuit
+        \\ 
         \subfloat[]{
         \includegraphics[width=0.6\columnwidth]{Figures_v2/Fig5b.pdf}
         \label{fig:5b}
@@ -254,21 +224,79 @@ In Modes 1-3, the magnetomotive force and magnetic resistance of both outer legs
         \includegraphics[width=0.53\columnwidth]{Figures_v2/Fig5c.pdf}
         \label{fig:5c}
         }
-        \caption{The proposed integrated transformer during the two phases of the converter, with the flux density components in each leg illustrated in (a). (b) is realized during the positive AC cycle, while (c) is realized during the negative cycle.}
+        \caption{The proposed integrated transformer during the two phases of the converter, with the flux density components in each leg illustrated in (a). {\color{red} (b) is the flux density contribution by $N_{12}-N_{34}$ during the first active phase, while (c) is the flux density contribution by $N_{56}-N_{78}$ during the second active phase.}}
+        \label{fig:5}
 \end{figure}
 
+\begin{figure*}[htbp]
+    \centering
+    \includegraphics[width=\textwidth]{Figures_v2/Fig6new.pdf} % Change the filename if yours is different
+    \caption{\color{red} Magnetic flux paths in the proposed integrated transformer across the six operating modes. (a) Mode 1 ($t_1 < t < t_2$): Phase 1 is charging and Phase 2 is discharging, resulting in the coexistence of $B'$ and $B''$. (b) Modes 2 and 3 ($t_2 < t < t_4$): Phase 1 is solely active, demonstrating perfect flux cancellation in the center leg. (c) Mode 4 ($t_4 < t < t_5$): Phase 2 is charging and Phase 1 is discharging, with both $B'$ and $B''$ present. (d) Modes 5 and 6 ($t_5 < t < t_7$): Phase 2 is solely active.}
+    \label{fig:6}
+\end{figure*}
+
+The detailed analysis of each operating mode is as follows:
+
+\begin{enumerate}
+    \item Mode 1 ($t_1 < t < t_2$, Fig. \ref{fig:mode_1}): At time $t_1$, switch $S_1$ turns on and $S_2$ remains off. The transformer $N_{12}-N_{34}$ begins storing energy in its magnetizing inductance. Its magnetizing current $i_{L_{\mathrm{m}_1}}$ and the corresponding flux densities in the outer legs $B'_{\mathrm{o}_1}$ and $B'_{\mathrm{o}_2}$ linearly increase from zero. Simultaneously, transformer $N_{56}-N_{78}$ completes its discharge phase, with its magnetizing current $i_{L_{\mathrm{m}_2}}$ and secondary diode current $i_{\mathrm{D}_2}$ decreasing to zero at $t_2$. {\color{red} During this interval, the magnetic fluxes from both transformers coexist in the core, as illustrated in Fig. \ref{fig:6}(a).}
+
+    \item Mode 2 ($t_2 < t < t_3$, Fig. \ref{fig:mode_2}): Mode 2 starts right after transformer $N_{56}-N_{78}$ completes its discharging phase, which means its associated currents $i_{\mathrm{D}_2}$, $i_{L_{\mathrm{m}_2}}$, and flux densities $B''_{\mathrm{o}_1}$, $B''_{\mathrm{o}_2}$, and $B''_{\mathrm{c}}$ are zero. Now, with $S_1$ still on, transformer $N_{12}-N_{34}$ continues storing energy until $i_{L_{\mathrm{m}_1}}$ reaches its peak value at $t_3$. 
+    
+    \vspace{\baselineskip}
+    {\color{red} Because the converter operates as a PFC rectifier, the instantaneous input voltage follows a rectified sinusoidal envelope $v_{\mathrm{in}}(t) = V_{\mathrm{in}_{\mathrm{max}}} |\sin(2\pi f_{\mathrm{line}} t)|$, where $V_{\mathrm{in}_{\mathrm{max}}}$ is the peak AC line voltage and $f_{\mathrm{line}}$ is the line frequency. Assuming $v_{\mathrm{in}}(t)$ is quasi-static during a single high-frequency switching cycle, the time-variant peak primary current $i_{\mathrm{S}_{1_{\mathrm{pk}}}}(t)$ reached at the end of the ON-time of the first active phase is given by:}
+    \begin{equation}
+    \label{eq:1}
+    {\color{red} i_{\mathrm{S}_{1_{\mathrm{pk}}}}(t) = \frac{V_{\mathrm{in}_{\mathrm{max}}} |\sin(2\pi f_{\mathrm{line}} t)|}{L_{\mathrm{m}_1}} D T_{\mathrm{s}} }
+    \end{equation}
+    where $D$ is the duty cycle, $T_{\mathrm{s}}$ is the switching period, and $L_{\mathrm{m}_1}$ is the magnetizing inductance of transformer $N_{12}-N_{34}$. {\color{red} Consequently, the flux densities $B'_{\mathrm{o}_1}$ and $B'_{\mathrm{o}_2}$ also reach their cycle-specific peak values $B'_{\mathrm{o}_{\mathrm{pk}}}(t)$ which are given by \eqref{eq:2}:}
+    \begin{equation}
+    \label{eq:2}
+    {\color{red} B'_{\mathrm{o}_{\mathrm{pk}}}(t) = \frac{L_{\mathrm{m}_1} i_{\mathrm{S}_{1_{\mathrm{pk}}}}(t)}{N_{12} A_{\mathrm{o}}} }
+    \end{equation}
+    with $N_{12}$ as the number of turns in the primary side of the active transformer and $A_{\mathrm{o}}$ is the cross-sectional area of the outer leg, where the transformer $N_{12}-N_{34}$ is wound.
+
+    \item Mode 3 ($t_3 < t < t_4$, Fig. \ref{fig:mode_3}): Mode 3 starts right after transformer $N_{12}-N_{34}$ finishes charging. At $t_3$, Switch $S_1$ turns off, initiating the discharge phase of transformer $N_{12}-N_{34}$. The magnetizing current $i_{L_{\mathrm{m}_1}}$, diode current $i_{\mathrm{D}_1}$, and flux densities $B'_{\mathrm{o}_1}$ and $B'_{\mathrm{o}_2}$ begin to decrease linearly. Transformer $N_{56}-N_{78}$ remains inactive in this period.
+\end{enumerate}
+\vspace{\baselineskip}
+{\color{red} Transformer $N_{12}-N_{34}$ operates as follows. The magnetomotive force and magnetic resistance of both outer legs for $N_{12}-N_{34}$ are equal. This causes the magnetic flux from the outer legs that flow into the center leg to be canceled. This causes no electromotive force generated in transformer $N_{56}-N_{78}$. As illustrated in Fig. \ref{fig:6}(b), during Modes 2 and 3, the flux solely flows on the outer legs. Therefore, the transformer formed by the outer legs operates independently from the transformer in the center leg. The equivalent magnetic circuit for this transformer is shown in Fig. \ref{fig:7}(a).}
+\vspace{\baselineskip}
+\begin{enumerate}
+    \setcounter{enumi}{3}
+    \item Mode 4 ($t_4 < t < t_5$, Fig. \ref{fig:mode_4}): Mode 4 operates similarly to the positive cycle. Switch $S_2$ turns on at $t_4$ and $S_1$ remains off. Transformer $N_{56}-N_{78}$ stores energy in its magnetizing inductance. Its current $i_{L_{\mathrm{m}_2}}$ and the corresponding flux densities $B''_{\mathrm{o}_1}$, $B''_{\mathrm{c}}$ and $B''_{\mathrm{o}_2}$ linearly increase. Simultaneously, transformer $N_{12}-N_{34}$ completes its discharge phase, with $i_{L_{\mathrm{m}_1}}$ and $i_{\mathrm{D}_1}$ decreasing to zero at $t_5$. {\color{red} Similar to Mode 1,  $B'$ and $B''$ coexist, as shown in Fig. \ref{fig:6}(c).}
+
+    \item Mode 5 ($t_5 < t < t_6$, Fig. \ref{fig:mode_5}): Mode 5 starts after the discharge of transformer $N_{12}-N_{34}$ completes. Now, with Switch $S_2$ still on, transformer $N_{56}-N_{78}$ continues storing energy until $i_{L_{\mathrm{m}_2}}$ reaches its peak value at $t_6$. {\color{red} Similarly bounded by the input voltage envelope, the time-variant peak primary current $i_{\mathrm{S}_{2_{\mathrm{pk}}}}(t)$ reached at the end of the ON-time of the second active phase is given by:}
+    \begin{equation}
+    \label{eq:3}
+    {\color{red} i_{\mathrm{S}_{2_{\mathrm{pk}}}}(t) = \frac{V_{\mathrm{in}_{\mathrm{max}}} |\sin(2\pi f_{\mathrm{line}} t)|}{L_{\mathrm{m}_2}} D T_{\mathrm{s}} }
+    \end{equation}
+    where $L_{\mathrm{m}_2}$ is the magnetizing inductance of transformer $N_{56}-N_{78}$. {\color{red} Consequently, the flux densities $B''_{\mathrm{o}_1}$, $B''_{\mathrm{c}}$ and $B''_{\mathrm{o}_2}$ also reach their cycle-specific peak values. The time-variant peak value of the center leg flux density $B''_{\mathrm{c}_{\mathrm{pk}}}(t)$ is given by \eqref{eq:4}:}
+    \begin{equation}
+    \label{eq:4}
+    {\color{red} B''_{\mathrm{c}_{\mathrm{pk}}}(t) = B''_{\mathrm{o}_{\mathrm{pk}}}(t) = \frac{L_{\mathrm{m}_2} i_{\mathrm{S}_{2_{\mathrm{pk}}}}(t)}{N_{56} A_{\mathrm{c}}} }
+    \end{equation}
+    with $N_{56}$ as the number of turns in the primary side of the active transformer and $A_{\mathrm{c}}$ is the cross-sectional area of the center leg where the transformer $N_{56}-N_{78}$ is wound.
+
+    \item Mode 6 ($t_6 < t < t_7$, Fig. \ref{fig:mode_6}): Switch $S_2$ turns off, initiating the discharge phase of transformer $N_{56}-N_{78}$. The currents $i_{L_{\mathrm{m}_2}}, i_{\mathrm{D}_2},$ and flux densities $B''_{\mathrm{o}_1}$, $B''_{\mathrm{c}}$, and $B''_{\mathrm{o}_2}$ begin to decrease linearly. Transformer $N_{12}-N_{34}$ remains inactive.
+\end{enumerate}
+
+\vspace{\baselineskip}
+
+{\color{red} Transformer $N_{56}-N_{78}$ operates as follows. The magnetic resistance of both outer legs is equal, causing the magnetic flux from the center legs to be divided equally into both outer legs. Since the number of turns of both outer legs is equal and wound in an opposite polarity, the electromotive force generated in $N_{12}-N_{34}$ is canceled. As illustrated in Fig. \ref{fig:6}(d), during Modes 5 and 6, only the flux from the center legs flows through the transformer. Therefore, the transformer formed by the center leg operates independently from the transformer in the outer leg, and the equivalent magnetic circuit for this case is shown in Fig. \ref{fig:7}(b).}
+
+% -------- MAGNETIC CIRCUIT FIGURE GOES HERE --------
 \begin{figure}[b!]
 \centering
-% (a) Top circuit
-        \includegraphics[width=0.92\columnwidth]{Figures_v2/Fig6.pdf} % Make sure this file exists
-        
+        \includegraphics[width=0.92\columnwidth]{Figures_v2/Fig6.pdf} % Change filename if needed
         \caption{Equivalent magnetic circuits for the proposed transformer. (a) shows the equivalent magnetic circuit for $N_{12}-N_{34}$, while (b) shows the equivalent magnetic circuit for $N_{56}-N_{78}$.}
-        \label{fig:6}
+        \label{fig:7}
 \end{figure}
+% ---------------------------------------------------
 
-For Modes 4-6, since the magnetic resistance of both outer legs is equal, the magnetic flux is divided equally into both outer legs. Furthermore, since the number of turns of both outer legs is equal and wound in an opposite polarity, the electromotive force generated in $N_{12}-N_{34}$ is canceled. Therefore, the transformer formed by the center leg operates independently from the transformer in the outer leg, and the integrated transformer is equivalent to that of Fig. \ref{fig:5c}. The equivalent magnetic circuit for this case is shown in Fig. \ref{fig:6}(b).
+{\color{red} As derived in the expanded time-variant equations for Mode 2 and Mode 5, the linear switching ramps are continuously bounded by the low-frequency cycle of $v_{\mathrm{in}}$. Consequently, both the instantaneous switch current stress and the peak core flux density vary dynamically across the line period. The converter components experience their absolute maximum operational stresses exclusively at the peak of the AC line voltage $V_{\mathrm{in}_{\mathrm{max}}}$.}
 
 The proposed winding structure achieves zero magnetic coupling between the two transformers. Consequently, the distinct magnetic circuits share a single core without magnetic interference. Each transformer maintains independent operation despite the physical integration. This structure eliminates the need for two discrete magnetic components. As a result, the total volume of the magnetic components is significantly reduced.
+
+{\color{red} Because the proposed integrated transformer achieves magnetic decoupling, the fundamental DCM operation of the converter remains electrically identical to a conventional interleaved topology utilizing discrete transformers. As a result, the standard electrical benefits of two-phase interleaving are fully preserved. Utilizing the same fixed $f_\mathrm{s}$, $D$, and $L_{\mathrm{m}}$, the phase currents are governed by identical electrical principles, ensuring that input and output current ripple cancellation is maintained. PFC and Total Harmonic Distortion (THD) are expected to be similar performance expected from a conventional discrete setup.}
 
 \subsection{Saturation Magnetic Flux Density Analysis}
 \begin{figure*}[b!]
@@ -296,7 +324,7 @@ The proposed winding structure achieves zero magnetic coupling between the two t
     \label{fig:flux_waveforms}
 \end{figure*}
 
-The circuit operation is classified into three patterns determined by $D$ and the boundary condition $D \le 0.5 \frac{n V_{\mathrm{o}}}{V_{\mathrm{in}_{\mathrm{max}}}}$. This classification, illustrated in Fig. 7, arises because the integrated single-core structure permits simultaneous magnetizing current flow in multiple active windings, resulting in distinct flux superposition compared to conventional discrete transformers. The manner of superposition due to the magnetizing current can be controlled by $t_{\mathrm{dis}}$. Consequently, the saturation magnetic flux density $B_{\mathrm{max}}$ is a critical parameter for the transformer geometry. It can be expressed in terms of the saturation magnetic flux density in each phase, denoted as $B'_{\mathrm{max}}$ and $B''_{\mathrm{max}}$, with $B'_{\mathrm{max}} = B''_{\mathrm{max}}$ since $L_{\mathrm{m}_1} = L_{\mathrm{m}_2}$. The flux density in each leg is examined further using the principle of superposition, with the expressions of the superimposed flux densities in the left, right and center legs shown in \eqref{eq:5}-\eqref{eq:7}, represented as $B_{\mathrm{o}_1}$, $B_{\mathrm{o}_2}$ and $B_{\mathrm{c}}$ respectively:
+The circuit operation is classified into three patterns determined by $D$ and the boundary condition $D \le 0.5 \frac{n V_{\mathrm{o}}}{V_{\mathrm{in}_{\mathrm{max}}}}$. This classification, illustrated in Fig. \ref{fig:flux_waveforms}, arises because the integrated single-core structure permits simultaneous magnetizing current flow in multiple active windings, resulting in distinct flux superposition compared to conventional discrete transformers. The manner of superposition due to the magnetizing current can be controlled by $t_{\mathrm{dis}}$. Consequently, the saturation magnetic flux density $B_{\mathrm{max}}$ is a critical parameter for the transformer geometry. It can be expressed in terms of the saturation magnetic flux density in each phase, denoted as $B'_{\mathrm{max}}$ and $B''_{\mathrm{max}}$, with $B'_{\mathrm{max}} = B''_{\mathrm{max}}$ since $L_{\mathrm{m}_1} = L_{\mathrm{m}_2}$. The flux density in each leg is examined further using the principle of superposition, with the expressions of the superimposed flux densities in the left, right and center legs shown in \eqref{eq:5}-\eqref{eq:7}, represented as $B_{\mathrm{o}_1}$, $B_{\mathrm{o}_2}$ and $B_{\mathrm{c}}$ respectively:
 \begin{align}
 B_{\mathrm{o}_1} &= B'_{\mathrm{o}_1} + B''_{\mathrm{o}_1} \label{eq:5}\\
 B_{\mathrm{o}_2} &= B'_{\mathrm{o}_2} - B''_{\mathrm{o}_2} \label{eq:6}\\
@@ -435,7 +463,7 @@ D = \frac{2}{V_{\mathrm{in}_{\mathrm{pk}}}} \sqrt{\frac{0.5 L_{\mathrm{m}} P_{\m
         \label{fig:10b}
         }
         
-        \caption{Prototype two-phase interleaved flyback rectifier (a) with the proposed integrated transformer (b).}
+        \caption{{\color{red}Schematic of the: (a) }Prototype two-phase interleaved flyback rectifier and {\color{red} the (b)} proposed integrated transformer.}
 \end{figure}
 \begin{table}[t!]
     \caption{Simulation Specifications of the Prototype Two-Phase Interleaved Flyback Rectifier}
@@ -446,7 +474,7 @@ D = \frac{2}{V_{\mathrm{in}_{\mathrm{pk}}}} \sqrt{\frac{0.5 L_{\mathrm{m}} P_{\m
         \hline
         \textbf{Item} & \textbf{Symbol} & \textbf{Value} \\
         \hline \hline
-        AC input voltage & $v_{\mathrm{in}}$ & 100 V V$_{\textrm{rms}}$\\
+        AC input voltage & $v_{\mathrm{in}}$ & 100 {\color{red}V$_{\textrm{rms}}$}\\
         Maximum rated power & $P_{\mathrm{O}}$ & 240 W \\
         Output voltage & $V_{\mathrm{O}}$ & 48 V \\
         Switching frequency & $f_{\mathrm{s}}$ & 100 kHz \\
@@ -501,22 +529,8 @@ Fig. \ref{fig:11} shows waveforms from the simulation testing of the two-phase i
 \end{figure}
 
 \section{Size Reduction Effect of the Proposed Transformer}
-This section examines the size reduction effect by the integrated transformer. For this study, the conventional transformer is assumed to be two separate transformers that facilitate isolation between the primary and secondary side. A representation is shown in Fig. \ref{fig:12a}, and its windings are represented in Fig. \ref{fig:13a}. The proposed integrated transformer is represented in Fig. \ref{fig:12b} and its windings are represented  in Fig. \ref{fig:13b}. The volume is compared by using the AP method. The AP method utilizes the product between the core cross-sectional area, $A_{\mathrm{c}}$, and the window-area, $A_{\mathrm{w}}$, and is a fundamental core size for the application \cite{ref21}. It can be expressed both in terms of the transformer geometric parameters and the circuit parameters, as will be demonstrated in the following analysis.
-\begin{figure}[b!]
-\centering
-% (a) Top circuit
-        \subfloat[]{
-        \includegraphics[width=0.8\columnwidth]{Figures_v2/Fig12a.pdf} % Make sure this file exists
-        \label{fig:12a}}
-        \\ % This double backslash forces the next image to the line below (vertical stack)
-        % (b) Middle circuit
-        \subfloat[]{
-        \includegraphics[width=0.7\columnwidth]{Figures_v2/Fig12b.pdf}
-        \label{fig:12b}}
-        
-        \caption{Two separate transformers (a) and proposed integrated transformer (b) used in the volume analysis.}
-        \label{fig:12}
-\end{figure}
+This section examines the size reduction effect by the integrated transformer. For this study, the conventional transformer is assumed to be two separate transformers that facilitate isolation between the primary and secondary side. {\color{red}The conventional transformer and its windings is represented in Fig.~\ref{fig:13a}. The proposed integrated transformer and its windings is represented in Fig.~\ref{fig:13b}.} The volume is compared by using the AP method. The AP method utilizes the product between the core cross-sectional area, $A_{\mathrm{c}}$, and the window area, $A_{\mathrm{w}}$, and is a fundamental core size for the application \cite{ref21}. It can be expressed both in terms of the transformer geometric parameters and the circuit parameters, as will be demonstrated in the following analysis.
+
 \begin{figure}[htbp]
 \centering
 % (a) Top circuit
@@ -535,7 +549,8 @@ This section examines the size reduction effect by the integrated transformer. F
         \label{fig:13}
 \end{figure}
 
-The EE-core was redesigned in such a way such that $A_{\mathrm{w}}$ and $A_{\mathrm{c}}$ are squares to allow for simpler analysis, as shown in Fig. \ref{fig:14} \cite{ref22}. Here, $A_{\mathrm{c}}$ is twice the area of the outer leg.
+
+The EE-core was redesigned such that $A_{\mathrm{w}}$ and $A_{\mathrm{c}}$ are squares to allow for simpler analysis, as shown in Fig.~\ref{fig:14} \cite{ref22}. Here, $A_{\mathrm{c}}$ is twice the area of the outer leg.
 
 \begin{figure}[htbp]
 \centering
@@ -545,50 +560,77 @@ The EE-core was redesigned in such a way such that $A_{\mathrm{w}}$ and $A_{\mat
         \label{fig:14}
 \end{figure}
 
-
-For the conventional transformer, $A_{\mathrm{c}}$ is expressed in \eqref{eq:28}. Here, $N_{\mathrm{p}}$ is the number of turns wound on the center leg of the conventional transformer.
+For the conventional transformer, $A_{\mathrm{c}}$ is expressed in \eqref{eq:Ac_conv}. Here, $N_{\mathrm{p}}$ is the number of turns wound on the center leg of the conventional transformer.
 \begin{equation}
-\label{eq:28}
+\label{eq:Ac_conv}
 A_{\mathrm{c}_{\mathrm{conv}}} = \frac{L_{\mathrm{m}} I_{\mathrm{pri}_{\mathrm{pk}}}}{B_{\mathrm{max}} N_{\mathrm{p}}}
 \end{equation}
-For the integrated transformer $A_{\mathrm{c}}$ is expressed in \eqref{eq:29}.
+
+For the integrated transformer, $A_{\mathrm{c}}$ is expressed in \eqref{eq:Ac_integ}.
 \begin{equation}
-\label{eq:29}
+\label{eq:Ac_integ}
 A_{\mathrm{c}_{\mathrm{integ}}} = \frac{L_{\mathrm{m}} I_{\mathrm{pri}_{\mathrm{pk}}}}{B_{\mathrm{max}} N_{56}}
 \end{equation}
 
-The window area $A_{\mathrm{w}}$ can be expressed in terms of winding area and the occupancy ratio $K_{\mathrm{u}}$, as seen in \eqref{eq:30} for the conventional transformer:
+The window area $A_{\mathrm{w}}$ can be expressed in terms of winding area and the occupancy ratio $K_{\mathrm{u}}$, as seen in \eqref{eq:Aw_conv1} for the conventional transformer:
 \begin{equation}
-\label{eq:30}
+\label{eq:Aw_conv1}
 A_{\mathrm{w}_{\mathrm{conv}}} K_{\mathrm{u}} = N_{\mathrm{p}} \frac{I_{\mathrm{pri}_{\mathrm{rms}}}}{J_{\mathrm{m}}} + N_{\mathrm{s}} \frac{I_{\mathrm{sec}_{\mathrm{rms}}}}{J_{\mathrm{m}}}
 \end{equation}
 which simplifies to:
 \begin{equation}
-\label{eq:30b}
+\label{eq:Aw_conv2}
 A_{\mathrm{w}_{\mathrm{conv}}} = \frac{N_{\mathrm{p}}}{J_{\mathrm{m}} K_{\mathrm{u}}} \left(I_{\mathrm{pri}_{\mathrm{rms}}} + \frac{I_{\mathrm{sec}_{\mathrm{rms}}}}{n}\right)
 \end{equation}
-For the integrated transformer, taking into account that the core window has half the total turns of the transformer $N_{12}-N_{34}$, $A_{\mathrm{w}}$ can be expressed as seen in \eqref{eq:32}.
+
+For the integrated transformer, {\color{red} winding $N_{12}$ and $N_{34}$ on the outer legs implies that $N_{12} \approx 2N_{56}$ and $N_{34} \approx 2N_{78}$.} Taking into account that the core window has half the total turns of the transformer $N_{12}-N_{34}$, $A_{\mathrm{w}}$ can be expressed as seen in \eqref{eq:Aw_integ}:
 \begin{align}
-\label{eq:32}
+\label{eq:Aw_integ}
 A_{\mathrm{w}_{\mathrm{integ}}} K_{\mathrm{u}} &= \left(N_{56} \frac{I_{\mathrm{pri}_{\mathrm{rms}}}}{J_{\mathrm{m}}} + N_{78} \frac{I_{\mathrm{sec}_{\mathrm{rms}}}}{J_{\mathrm{m}}}\right) \nonumber \\
-&\quad + \frac{1}{2}\left(N_{12} \frac{I_{\mathrm{pri}_{\mathrm{rms}}}}{J_{\mathrm{m}}} + N_{34} \frac{I_{\mathrm{sec}_{\mathrm{rms}}}}{J_{\mathrm{m}}}\right)
+&\quad + \frac{1}{2}\left(N_{12} \frac{I_{\mathrm{pri}_{\mathrm{rms}}}}{J_{\mathrm{m}}} + N_{34} \frac{I_{\mathrm{sec}_{\mathrm{rms}}}}{J_{\mathrm{m}}}\right) \nonumber \\
+&{\color{red} = 2 \left( \frac{N_{56} I_{\mathrm{pri}_{\mathrm{rms}}}}{J_{\mathrm{m}}} + \frac{N_{78} I_{\mathrm{sec}_{\mathrm{rms}}}}{J_{\mathrm{m}}} \right) }
 \end{align}
 
-The total volume of the EE core in Fig. \ref{fig:14} expressed in \eqref{eq:33}, where $x$ is a constant that denotes $A_{\mathrm{c}}/A_{\mathrm{w}}$. The volume corresponding to the conventional and integrated transformer is obtained using their respective $A_{\mathrm{c}}$ and $A_{\mathrm{w}}$.
+{\color{red} Using \eqref{eq:Ac_conv}, \eqref{eq:Ac_integ}, \eqref{eq:Aw_conv2}, and \eqref{eq:Aw_integ}, the AP of the conventional and proposed integrated transformers are expressed in \eqref{eq:AP_conv} and \eqref{eq:AP_integ} respectively:
 \begin{equation}
-\label{eq:33}
-\mathrm{Vol} = 2 AP^{\frac{3}{4}} (2 x^{\frac{1}{4}} + x^{\frac{3}{4}} + x^{-\frac{1}{4}})
+\label{eq:AP_conv}
+AP_{\mathrm{conv}} = A_{\mathrm{c}_{\mathrm{conv}}} A_{\mathrm{w}_{\mathrm{conv}}} = \frac{L_{\mathrm{m}} I_{\mathrm{pri}_{\mathrm{pk}}} \left( I_{\mathrm{pri}_{\mathrm{rms}}} + \frac{I_{\mathrm{sec}_{\mathrm{rms}}}}{n} \right)}{B_{\mathrm{max}} J_{\mathrm{m}} K_{\mathrm{u}}}
 \end{equation}
-The rms expressions of the primary and secondary side current of the interleaved flyback rectifier are given in \eqref{eq:34} and \eqref{eq:35} \cite{ref8}.
+
+\begin{equation}
+\label{eq:AP_integ}
+AP_{\mathrm{integ}} = A_{\mathrm{c}_{\mathrm{integ}}} A_{\mathrm{w}_{\mathrm{integ}}} = \frac{2 L_{\mathrm{m}} I_{\mathrm{pri}_{\mathrm{pk}}} \left( I_{\mathrm{pri}_{\mathrm{rms}}} + \frac{I_{\mathrm{sec}_{\mathrm{rms}}}}{n} \right)}{B_{\mathrm{max}} J_{\mathrm{m}} K_{\mathrm{u}}}
+\end{equation}
+
+From \eqref{eq:AP_conv} and \eqref{eq:AP_integ}, $AP_{\mathrm{integ}} \approx 2 AP_{\mathrm{conv}}$ ideally.}
+
+The total volume of the EE core in Fig.~\ref{fig:14} is expressed in \eqref{eq:Vol}, where $x$ is a constant that denotes $A_{\mathrm{c}}/A_{\mathrm{w}}$. The volume corresponding to the conventional and integrated transformer is obtained using their respective $A_{\mathrm{c}}$ and $A_{\mathrm{w}}$. {\color{red} Since the $A_{\mathrm{c}}$ and $A_{\mathrm{w}}$ depend on the number of corresponding turns, then the estimated volume will change depending on the actual implementation of the transformer.}
+\begin{equation}
+\label{eq:Vol}
+\mathrm{Vol} = 2 AP^{\frac{3}{4}} \left(2 x^{\frac{1}{4}} + x^{\frac{3}{4}} + x^{-\frac{1}{4}}\right)
+\end{equation}
+{\color{red}
+Also, the $A_{\mathrm{c}}$ and $A_{\mathrm{w}}$ can be expressed in terms of the AP and $x$ as shown in \eqref{eq:Ac_new} and \eqref{eq:Aw_new}:
+\begin{equation}
+\label{eq:Ac_new}
+A_{\mathrm{c}} = \sqrt{x \cdot AP}
+\end{equation}
+
+\begin{equation}
+\label{eq:Aw_new}
+A_{\mathrm{w}} = \sqrt{\frac{AP}{x}}
+\end{equation}
+}
+The rms expressions of the primary and secondary side current of the interleaved flyback rectifier are given in \eqref{eq:Irms_pri} and \eqref{eq:Irms_sec} \cite{ref8}.
 \begin{align}
-I_{\mathrm{pri}_{\mathrm{rms}}} &= \frac{V_{\mathrm{in}_{\mathrm{max}}}}{L_{\mathrm{m}} f_{\mathrm{s}}} \sqrt{\frac{D^3}{6}} \label{eq:34}\\
-I_{\mathrm{sec}_{\mathrm{rms}}} &= \frac{V_{\mathrm{in}_{\mathrm{max}}}}{L_{\mathrm{m}} f_{\mathrm{s}}} \sqrt{\frac{4 n D^3}{9 \pi} \cdot \frac{V_{\mathrm{in}_{\mathrm{max}}}}{V_{\mathrm{o}}}} \label{eq:35}
+I_{\mathrm{pri}_{\mathrm{rms}}} &= \frac{V_{\mathrm{in}_{\mathrm{max}}}}{L_{\mathrm{m}} f_{\mathrm{s}}} \sqrt{\frac{D^3}{6}} \label{eq:Irms_pri}\\
+I_{\mathrm{sec}_{\mathrm{rms}}} &= \frac{V_{\mathrm{in}_{\mathrm{max}}}}{L_{\mathrm{m}} f_{\mathrm{s}}} \sqrt{\frac{4 n D^3}{9 \pi} \cdot \frac{V_{\mathrm{in}_{\mathrm{max}}}}{V_{\mathrm{o}}}} \label{eq:Irms_sec}
 \end{align}
 
-The proposed design is estimated to reduce core volume by 56\% under the assumptions of the AP-based analysis using the designated circuit specfications, with the comparison shown in Table \ref{tab:volume}. This assumes that the integrated core geometry is custom-tailored to the specific AP requirements derived from the circuit specifications, rather than being constrained by standard commercial core shapes. While the experimental prototype described in Section V utilizes a commercial core (Magnetics 0P44721EC) for proof-of-concept, this theoretical analysis confirms that a purpose-built integrated core would offer significant improvements in power density compared to the conventional discrete implementation.
+{\color{red} The AP calculation based on circuit specifications is summarized in Table~\ref{tab:volume}. It is important to note that the conventional transformer implementation comprises of two discrete cores, which therefore means the values indicated in this table is for one core only.}
 
 \begin{table}[b!]
-    \caption{Volume Analysis of the Conventional and Proposed Transformer}
+    \caption{{\color{red}Volume Analysis of the Conventional and Proposed Transformer}}
     \centering
     \footnotesize
     \setlength{\tabcolsep}{2pt}
@@ -596,21 +638,13 @@ The proposed design is estimated to reduce core volume by 56\% under the assumpt
         \hline
         \textbf{Item} & \textbf{Symbol} & \textbf{Conventional} & \textbf{Proposed} \\
         \hline \hline
-        Maximum input voltage & $V_{\mathrm{in}_{\mathrm{max}}}$ & \multicolumn{2}{c}{240 V V$_{\mathrm{rms}}$} \\
+        Maximum input voltage & $V_{\mathrm{in}_{\mathrm{max}}}$ & \multicolumn{2}{c}{240 {\color{red}V$_{\mathrm{rms}}$}} \\
         Output voltage & $V_{\mathrm{O}}$ & \multicolumn{2}{c}{48 V} \\
         Maximum duty cycle & $D$ & \multicolumn{2}{c}{0.47} \\
         Switching frequency & $f_\mathrm{s}$ & \multicolumn{2}{c}{100 kHz} \\
         \hline
         Magnetizing inductance & $L_{\mathrm{m}}$ & \multicolumn{2}{c}{82.8 \textmu H} \\
         Turn ratio & $n$ & \multicolumn{2}{c}{3} \\
-        
-        % --- TURNS SECTION ---
-        Number of turns (Conv.) & $N_{\mathrm{p}}:N_{\mathrm{s}}$ & 24:8 & \multicolumn{1}{c}{--} \\
-        
-        % Multirow for Integrated
-        \multirow{2}{*}{Number of turns (Prop.)} & $N_{12}:N_{34}$ & \multicolumn{1}{c}{--} & 24:8 \\
-                                                      & $N_{56}:N_{78}$ & \multicolumn{1}{c}{--} & 18:6 \\
-        
         % --- SHARED PARAMETERS ---
         Primary side peak current & $I_{\mathrm{pri,pk}}$ & \multicolumn{2}{c}{8.02 A} \\
         Primary side rms current & $I_{\mathrm{pri,rms}}$ & \multicolumn{2}{c}{5.39 A} \\
@@ -620,16 +654,61 @@ The proposed design is estimated to reduce core volume by 56\% under the assumpt
         Occupancy ratio & $K_{\mathrm{u}}$ & \multicolumn{2}{c}{0.3} \\
         \hline
         Area Product & $\mathrm{AP}$ & 14128.75 mm$^4$ & 23547.91 mm$^4$ \\
-        Core Volume & $\mathrm{Vol}$ & 21106.38 mm$^3$ & 9398.46 mm$^3$ \\
         \hline
     \end{tabular}
     \label{tab:volume}
 \end{table}
 
+{\color{red} The theoretical volume is dominated by the $AP^{3/4}$ scaling law as seen in \eqref{eq:Vol}, and thus the term $\left( 2x^{1/4} + x^{3/4} + x^{-1/4} \right)$ can be treated as constant. Using the relationship $AP_{\mathrm{integ}} \approx 2 AP_{\mathrm{conv}}$, then the amount of volume reduction can be computed using \eqref{eq:Vol}, with the reduction amounting to 16\%.} This assumes that the integrated core geometry is custom-tailored to the specific AP requirements derived from the circuit specifications, rather than being constrained by standard commercial core shapes. While the experimental prototype described in Section V utilizes a commercial core (Magnetics 0P44721EC) for proof-of-concept, this theoretical analysis confirms that a purpose-built integrated core would offer significant improvements in power density compared to the conventional discrete implementation {\color{red} by standard commercial core shapes.}
+{\color{red}
+While the proposed integrated transformer achieves a theoretical 16\% reduction in core volume, this structural integration introduces some trade-offs regarding core and winding losses.
+
+In a conventional discrete setup, the flux density remains uniform across the isolated magnetic paths. In contrast, the proposed integrated core shares flux paths, resulting in a complex flux distribution due to the superposition of individual phase contributions. As established in the theoretical waveforms of Fig.~\ref{fig:flux_waveforms}, overlapping conduction intervals create localized regions of high flux density (additive flux) in one outer leg, while simultaneously creating regions of reduced flux density (subtractive flux) in the opposite outer leg. Because core loss scales non-linearly with flux density, the net impact on the total core loss involves both mitigating and compounding factors, necessitating rigorous analysis for full volumetric loss integration in future optimization stages.
+
+Furthermore, the geometry of the shared EE-core forces a structural asymmetry in the windings. To balance the magnetizing inductance, the outer legs require an increased turn count compared to a conventional discrete transformer. Although the smaller physical perimeter of the outer legs partially offsets the DC resistance penalty of these additional turns, the high-frequency AC resistance $R_{\mathrm{ac}}$ remains highly dependent on the physical layering and winding arrangement. Consequently, achieving optimal winding efficiency requires careful geometric optimization and parameter sweeping, which is a critical focus for the future phases of this study.}
+
 \section{Experimental Verification of Proposed Design}
 
-\subsection{Prototype Evaluation Circuit and Prototype Transformer}
-A prototype two-phase interleaved flyback rectifier, shown in Fig. \ref{fig:10a} operating in DCM was built to verify the operation of the integrated transformer. The prototype integrated transformer, shown in Fig. \ref{fig:10b}, was also designed using the proposed method. The specifications of the two-phase interleaved flyback rectifier and transformer are shown in Tables \ref{tab:prototype_rectifier} and \ref{tab:prototype_transformer} respectively. The transformer parameters were characterized using a Hioki IM3536 LCR meter at 100 kHz. The coupling coefficients of the transformers $k_{N_{12}-N_{34}}$, $k_{N_{56}-N_{78}}$, and $k_{N_{12}-N_{56}}$ were derived from the mutual inductance obtained after connecting the respective transformer windings in series-aiding and series-opposing configurations. The coupling coefficient between the two flyback transformers $k_{N_{12}-N_{56}}$ is 0.0005, showing that the coupling was almost eliminated.
+\subsection{Prototype Evaluation Circuit and Prototype {\color{red}Integrated} Transformer}
+{\color{red}
+A prototype two-phase interleaved flyback rectifier, with the circuit schematic shown in Fig.~\ref{fig:10a}, was built to verify the operation of the integrated transformer operating in DCM. A photograph of the prototype evaluation board is provided in Fig.~\ref{fig:pcb}, with the primary and secondary side separated for simple implementation. Because the fundamental operating principles of the converter remain identical to a conventional discrete setup, standard closed-loop modulation methods are directly applicable. Therefore, the experimental evaluation was intentionally conducted using open-loop control with a fixed duty cycle decided using \eqref{eq:27}.
+
+\begin{figure}[h!]
+\centering
+        \includegraphics[width=0.82\columnwidth]{Figures_v2/pcb.pdf} % Make sure this file exists
+        \caption{{\color{red}Photograph of the evaluation board for the proposed integreated flyback PFC rectifier.}}
+        \label{fig:pcb}
+\end{figure}
+
+The prototype integrated transformer, represented in Fig.~\ref{fig:10b}, was also designed using the proposed method. To strictly minimize leakage inductance, the primary and secondary windings of the transformer for each respective phase were physically overlapped on their designated legs. The EE-core used for the prototype is shown in Fig.~\ref{fig:core}. The windings are wound around lab-made coil formers, as shown in Fig.~\ref{fig:bobbin}, which were fabricated using a Flashforge Adventurer 4 Series 3D printer, and are finally placed onto the corresponding legs of the core. A photograph of the fully assembled prototype integrated transformer is shown in Fig.~\ref{fig:trans}. The specifications of the two-phase interleaved flyback rectifier and transformer are shown in Tables~\ref{tab:prototype_rectifier} and \ref{tab:prototype_transformer}, respectively. 
+
+\begin{figure}[b!]
+\centering
+% (a) Top circuit
+        \subfloat[]{
+        \includegraphics[width=0.4\columnwidth]{Figures_v2/core.pdf} % Make sure this file exists
+        \label{fig:core}
+        }
+        \\ % This double backslash forces the next image to the line below (vertical stack)
+        % (b) Middle circuit
+        \subfloat[]{
+        \includegraphics[width=0.54\columnwidth]{Figures_v2/bobbin.pdf}
+        \label{fig:bobbin}
+        }
+
+        \subfloat[]{
+        \includegraphics[width=0.7\columnwidth]{Figures_v2/trans.pdf}
+        \label{fig:trans}
+        }
+        
+        \caption{{\color{red}Photographs of the proposed integrated transformer: (a) EE-core for the prototype; (b) lab-produced coil formers using a Flashforge Adventurer 4 Series 3D printer; and (c) final assembled prototype, with windings labeled.}}
+\end{figure}
+
+
+
+The comprehensive list of equipment used in the experimental evaluation is summarized in Table~\ref{tab:equipment}. A Tektronix MSO58 high-definition oscilloscope was used to capture experimental waveforms. The open-loop PWM signals were generated via a Tektronix AFG31000 Series function generator, and the integrated transformer parameters were characterized using a Hioki IM3536 LCR meter at 100 kHz.
+
+The coupling coefficients of the transformers $k_{N_{12}-N_{34}}$, $k_{N_{56}-N_{78}}$, and $k_{N_{12}-N_{56}}$ were derived from the mutual inductance obtained after connecting the respective transformer windings in series-aiding and series-opposing configurations. The physical overlapping of the windings resulted in high intra-phase coupling coefficients, with $k_{N_{12}-N_{34}}$ measured at 0.970 and $k_{N_{56}-N_{78}}$ at 0.979. Furthermore, the cross-coupling coefficient between the two flyback transformers $k_{N_{12}-N_{56}}$ is 0.0005, showing that the coupling between phases was almost eliminated. Because this decoupling is geometrically enforced by the core and winding arrangement, it is expected to be maintained even under load transient conditions. While severe transients may introduce high-frequency harmonics that slightly degrade this ideal isolation due to parasitic elements, their magnitude and energy are negligible compared to the fundamental operating frequencies, ensuring that the overall dynamic stability of the converter is preserved.}
 
 \begin{table}[b!]
     \caption{Specifications of the Prototype Two-Phase Interleaved Flyback Rectifier}
@@ -640,7 +719,7 @@ A prototype two-phase interleaved flyback rectifier, shown in Fig. \ref{fig:10a}
         \hline
         \textbf{Item} & \textbf{Symbol} & \textbf{Value / Component} \\
         \hline \hline
-        AC input voltage & $v_{\mathrm{in}}$ & 100-240 V  V$_{\textrm{rms}}$ \\
+        AC input voltage & $v_{\mathrm{in}}$ & 100-240 {\color{red}V$_{\textrm{rms}}$} \\
         Maximum rated power & $P_{\mathrm{O}}$ & 240 W \\
         Output voltage & $V_{\mathrm{O}}$ & 48 V \\
         Switching frequency & $f_{\mathrm{s}}$ & 100 kHz \\
@@ -684,8 +763,34 @@ A prototype two-phase interleaved flyback rectifier, shown in Fig. \ref{fig:10a}
     \label{tab:prototype_transformer}
 \end{table}
 
+\begin{table}[b!] % You can change [htbp] to [b!] if you want to force it to the bottom of a page
+    \caption{{\color{red}Equipment Used in the Experimental Verification}}
+    \centering
+    \footnotesize
+    \setlength{\tabcolsep}{3pt}
+    \begin{tabular}{cc}
+        \hline
+        \textbf{Equipment Type} & \textbf{Manufacturer \& Model} \\
+        \hline \hline
+        AC Power Supply & Kikusui CR2000M \\
+        DC Electronic Load & Kikusui PLZ1004WH \\
+        Oscilloscope (8-Channel) & Tektronix MSO58 \\
+        Differential Voltage Probes & Tektronix THDP0200 \\
+        Current Probes & Tektronix TCP0030A \\
+        Auxiliary Power Supply (5 V) & Matsusada TB160V15A720W \\
+        Auxiliary Power Supply (3.3 V) & Kikusui PWR401L \\
+        Function Generator & Tektronix AFG31000 Series \\
+        LCR Meter & Hioki IM3536 \\
+        \hline
+    \end{tabular}
+    \label{tab:equipment}
+\end{table}
+
 \subsection{Experimental Results}
-Fig. \ref{fig:16a} shows the 100 W experimental waveforms at 4 ms/div from the two-phase interleaved flyback rectifier with the proposed transformer, demonstrating power factor correction. Fig. \ref{fig:16b} presents 2 \textmu s/div waveforms. No current is induced in either switch except during the resonance between the leakage inductance and the parasitic capacitance of the switch. During the inactive period of the transformer, secondary diode side current is zero. Moreover, after $i_{\mathrm{S}_1}$ and $i_{\mathrm{S}_2}$ reached zero when $S_1$ and $S_2$ switched off, the currents remained at zero. Therefore, the two flyback converters operate independently without magnetic coupling interference. The same phenomenon was observed at 240 W two-phase drive, as shown in Fig. \ref{fig:16c}. Single-phase drive at lower power at 32.5 W is also feasible as shown in Fig. \ref{fig:16d}.
+Fig. \ref{fig:16a} shows the 100 W experimental waveforms at 4 ms/div from the two-phase interleaved flyback rectifier with the proposed transformer, demonstrating {\color{red}PFC}. Fig. \ref{fig:16b} presents 2 \textmu s/div waveforms. No current is induced in either switch except during the resonance between the leakage inductance and the parasitic capacitance of the switch. During the inactive period of the transformer, secondary diode side current is zero. Moreover, after $i_{\mathrm{S}_1}$ and $i_{\mathrm{S}_2}$ reached zero when $S_1$ and $S_2$ switched off, the currents remained at zero. Therefore, the two flyback converters operate independently without magnetic coupling interference. The same phenomenon was observed at 240 W two-phase drive, as shown in Fig. \ref{fig:16c}. Single-phase drive at lower power at 32.5 W is also feasible as shown in Fig. \ref{fig:16d}.
+
+{\color{red}
+Two distinct parasitic resonant behaviors can be observed in the $v_\mathrm{ds}$ waveforms in Fig.~\ref{fig:16b} and Fig.~\ref{fig:16c} according to the operational dynamics of the flyback converter. The same phenomenon can also be observed in Fig.~\ref{fig:16d} for one-phase drive. A high-frequency ringing occurs immediately at switch turn-off, driven by the resonance between the leakage inductance of the transformer and the parasitic output capacitance $C_\mathrm{oss}$ of the switches. This voltage stress is mitigated by the implemented primary-side RCD snubbers. Second, a lower-frequency oscillation appears when the secondary diode currents $i_{\mathrm{D}_1}$ and $i_{\mathrm{D}_2}$ reach zero, indicating complete transformer demagnetization. During this interval, the main magnetizing inductance of the active transformer resonates with $C_{\mathrm{oss}}$ until the next switching cycle initiates. Nevertheless, these parasitic behaviors do not interfere with the non-coupled operation of the proposed transformer.}
 
 % --- TABLE VI: Rectifier Specifications ---
 
@@ -694,30 +799,30 @@ Fig. \ref{fig:16a} shows the 100 W experimental waveforms at 4 ms/div from the t
 \centering
 % (a) Top circuit
         \subfloat[]{
-        \includegraphics[width=0.9\columnwidth]{Figures_v2/Fig16a.pdf} % Make sure this file exists
+        \includegraphics[width=0.95\columnwidth]{Figures_v2/Fig16a.pdf} % Make sure this file exists
         \label{fig:16a}}
         \\ % This double backslash forces the next image to the line below (vertical stack)
         % (b) Middle circuit
         \subfloat[]{
-        \includegraphics[width=0.9\columnwidth]{Figures_v2/Fig16b.pdf}
+        \includegraphics[width=0.95\columnwidth]{Figures_v2/Fig16b.pdf}
         \label{fig:16b}}
         \\ % This double backslash forces the next image to the line below (vertical stack)
         % (b) Middle circuit
         \subfloat[]{
-        \includegraphics[width=0.9\columnwidth]{Figures_v2/Fig16c.pdf}
+        \includegraphics[width=0.95\columnwidth]{Figures_v2/Fig16c.pdf}
         \label{fig:16c}}
         \\ % This double backslash forces the next image to the line below (vertical stack)
         % (b) Middle circuit
         \subfloat[]{
-        \includegraphics[width=0.9\columnwidth]{Figures_v2/Fig16d.pdf}
+        \includegraphics[width=0.95\columnwidth]{Figures_v2/Fig16d.pdf}
         \label{fig:16d}}
         
-        \caption{Experimental waveforms of a two-phase interleaved flyback rectifier with the proposed integrated transformer at (a) \& (b): 100 W, two-phase AC drive, (c): 240 W, two-phase AC drive, (d): 32.5 W, single-phase AC drive. For (a) and (b): $v_{\mathrm{in}}$: 50 V/div., $V_{\mathrm{o}}$: 10 V/div., $v_{\mathrm{ds}_1}, v_{\mathrm{ds}_2}$: 100 V/div., $i_{\mathrm{S}_1}, i_{\mathrm{S}_2}$: 1 A/div., $i_{\mathrm{D}_1}, i_{\mathrm{D}_2}$: 5 A/div.; For (c): $v_{\mathrm{in}}$: 50 V/div., $V_{\mathrm{o}}$: 10 V/div., $v_{\mathrm{ds}1}, v_{\mathrm{ds}2}$: 100 V/div., $i_{\mathrm{S}_1}, i_{\mathrm{S}_2}$: 2 A/div., $i_{\mathrm{D}_1}, i_{\mathrm{D}_2}$: 5 A/div.; For (d): $v_{\mathrm{in}}$: 50 V/div., $V_{\mathrm{o}}$: 20 V/div., $v_{\mathrm{ds}_1}, v_{\mathrm{ds}_2}$: 100 V/div., $i_{\mathrm{S}_1}, i_{\mathrm{S}_2}$: 2 A/div., $i_{\mathrm{D}_1}, i_{\mathrm{D}_2}$: 2 A/div.}
+        \caption{{\color{red}Experimental waveforms of the proposed two-phase interleaved flyback rectifier at (a) \& (b): 100 W, two-phase AC drive, (c): 240 W, two-phase AC drive, (d): 32.5 W, single-phase AC drive. For (a) and (b): $v_{\mathrm{in}}$: 50 V/div., $V_{\mathrm{o}}$: 10 V/div., $v_{\mathrm{ds}_1}, v_{\mathrm{ds}_2}$: 100 V/div., $i_{\mathrm{S}_1}, i_{\mathrm{S}_2}$: 1 A/div., $i_{\mathrm{D}_1}, i_{\mathrm{D}_2}$: 5 A/div.; For (c): $v_{\mathrm{in}}$: 50 V/div., $V_{\mathrm{o}}$: 10 V/div., $v_{\mathrm{ds}1}, v_{\mathrm{ds}2}$: 100 V/div., $i_{\mathrm{S}_1}, i_{\mathrm{S}_2}$: 2 A/div., $i_{\mathrm{D}_1}, i_{\mathrm{D}_2}$: 5 A/div.; For (d): $v_{\mathrm{in}}$: 50 V/div., $V_{\mathrm{o}}$: 20 V/div., $v_{\mathrm{ds}_1}, v_{\mathrm{ds}_2}$: 100 V/div., $i_{\mathrm{S}_1}, i_{\mathrm{S}_2}$: 2 A/div., $i_{\mathrm{D}_1}, i_{\mathrm{D}_2}$: 2 A/div.}}
         \label{fig:16}
 \end{figure}
 
 \section{Conclusion}
-In this paper, an integrated transformer was successfully designed for a two-phase interleaved flyback rectifier for USB PD applications. The proposed winding structure for the integrated transformer prevents coupling between the two flyback transformers and achieves simple manufacturability through the use of a commercial EE-core. A coupling coefficient of 0.0005 was achieved with the prototype. Independent flyback circuit operation without magnetic interference due to coupling was verified through simulation and experiment up to 240 W. Through the proposed design, two discrete transformers are integrated into a single magnetic component. The structure is estimated to enable up to a 56\% downsizing of magnetic components compared to conventional discrete transformers.
+In this paper, an integrated transformer was successfully designed for a two-phase interleaved flyback rectifier for USB PD applications. The proposed winding structure for the integrated transformer prevents coupling between the two flyback transformers and achieves simple manufacturability through the use of a commercial EE-core. A coupling coefficient of 0.0005 was achieved with the prototype. Independent flyback circuit operation without magnetic interference due to coupling was verified through simulation and experiment up to 240 W. Through the proposed design, two discrete transformers are integrated into a single magnetic component. The structure is estimated to enable up to a {\color{red}16\%} downsizing of magnetic components compared to conventional discrete transformers.
 
 % --- TABLE V: Volume Analysis ---
 
