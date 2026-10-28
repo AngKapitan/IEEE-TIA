@@ -99,25 +99,24 @@ Recent developments in interleaved flyback rectifiers have focused heavily on op
 To overcome the volume limitations of discrete implementations, integrated magnetic structures for interleaved flybacks have also been researched \cite{ishihara2015},\cite{tonolo2025}, \cite{qian2008}. In these configurations, magnetic coupling is intentionally introduced to realize distinct operational benefits. For instance, intentional coupling between phases of the integrated transformer using an EE-core has been utilized to achieve reduction of ripple current \cite{ishihara2015}. Coupling between four windings of a coupled inductor was utilized to enable soft-commutation in current-fed PFC rectifiers \cite{tonolo2025}. However, these approaches require complex tuning of the coupling coefficients and design parameters. The transformer in \cite{qian2008} utilizes an EE-core with inversely coupled secondary windings to meet specific output current ripple requirements. However, the inverse coupling may introduce unwanted circulating currents or EMI if not properly managed. Therefore, the introduction of coupling can introduce some complications in manufacturing. For interleaving, coupling makes control design more complicated, as the coupling coefficients have to be taken into account in the transfer functions, since coupling causes cross talk between the phases \cite{Mao_2011}. 
 
 
-Structural decoupling approaches have been explored to bypass these circulating currents and accommodate the variable-load requirements of USB PD, offering an alternative to control-based phase shedding. Some approaches design decouples phases by separating the flux paths using  3-D orthogonal-flux core geometries \cite{Ouyang},\cite{fayyaz2025}. However, these custom cores constrain commercial manufacturability and increases fabrication costs. Another proposed solution is an integrated nonlinear coupled inductor designed to decouple four phases at light loads \cite{Z_Li_2025}. Achieving this variable coupling requires customized, multi-piece L- and T-shaped core assemblies with manually configured geometries, introducing tight assembly tolerances and manufacturing complexity.
+Structural decoupling approaches have been explored to bypass these circulating currents and accommodate the variable-load requirements of USB PD, offering an alternative to control-based phase shedding. Some approaches design decouples phases by separating the flux paths using  3-D orthogonal-flux core geometries \cite{Ouyang},\cite{fayyaz2025}. However, these custom cores constrain commercial manufacturability and increases fabrication costs. Another proposed solution is an integrated nonlinear coupled inductor designed to decouple four phases at light loads \cite{Z_Li_2025}. Achieving this variable coupling requires customized, multi-piece L- and T-shaped core assemblies with manually configured geometries, introducing tight assembly tolerances and manufacturing complexity. To clarify the operational trade-offs among these existing approaches, a comprehensive comparison of state-of-the-art interleaved flyback topologies and their magnetic configurations is summarized in Table I.
 
-%\begin{table*}[htbp]
- %   \caption{Comparison of Magnetic Structures for Interleaved Converters}
- %   \centering
-  %  \footnotesize
-  %  \begin{tabular}{lcccc}
-  %      \hline
-   %     \textbf{Characteristic} & \textbf{Discrete} & \textbf{Coupled Integrated} \cite{ishihara2015} & \textbf{Custom 3D / Multi-Piece} \cite{18, 24} & \textbf{Proposed} \\
-    %    \hline \hline
-     %   \textbf{Number of Cores} & $\ge 2$ & 1 & 1 & \textbf{1} \\
-      %  \textbf{Core Geometry Complexity} & Simple (Standard) & Simple (Standard) & High (Custom) & \textbf{Simple (Standard EE)} \\
-      %  \textbf{Inter-phase Magnetic Coupling} & None & High ($k \ge 0.6$) & None & \textbf{None ($k \approx 0.0005$)} \\
-       % \textbf{Independent Phase Operation} & Yes & No (Circulating currents) & Yes & \textbf{Yes} \\
-        %\textbf{Manufacturing Suitability} & High & High & Low (Tight tolerances) & \textbf{High} \\
-        %\hline
-    %\end{tabular}
-    %\label{tab:comparison}
-%\end{table*}
+\begin{table*}[b!]
+    \caption{Comparison of State-of-the-Art Interleaved Flyback Configurations}
+    \centering
+    \footnotesize
+    \begin{tabular}{l m{4cm} m{4.5cm} m{4.5cm}}
+        \hline
+        \textbf{Configuration} & \textbf{Transformer Type} & \textbf{Key Advantages} & \textbf{Drawbacks / Limitations} \\
+        \hline \hline
+        Conventional Interleaved & Multiple, discrete cores \cite{shi2024, cheng2018, wu2015, cheng2023, mayer2025} & Independent phase operation, simple control & High component count, low power density, and increased footprint \\
+        Coupled Interleaved & Integrated (coupled) \cite{ishihara2015, tonolo2025, qian2008} & High power density, potential ripple reduction & Circulating currents that degrade light-load efficiency \cite{Yang_2020, Z_Li_2025}, higher parasitics \cite{meng2021, kwon2024}, and complex control \cite{Mao_2011} \\
+        Decoupled Interleaved & Integrated (Orthogonal / Custom Core) \cite{Z_Li_2025, Ouyang, fayyaz2025} & Independent phase operation, high power density & High manufacturing complexity due to non-standard core geometry \\
+        \textbf{Proposed Configuration} & \textbf{Integrated (Non-coupled)} & \textbf{Independent phase operation, high power density, uses standard commercial EE-core} & \textbf{Complex flux distribution; structural asymmetry in the windings} \\
+        \hline
+    \end{tabular}
+    \label{tab:literature_comparison}
+\end{table*}
 
 This paper proposes a non-coupled integrated transformer for a two-phase interleaved flyback rectifier as shown in Fig. \ref{fig:2a} to address these limitations. The structure is designed to achieve zero magnetic coupling between phases, ensuring independent phase operation without magnetic interference. The proposed winding structure is shown in Fig. \ref{fig:2b} where $N_{ab}$ is the number of turns between terminals $a$ and $b$. Half of $N_{12}$ and $N_{34}$ are wound at each outer leg with opposite polarity, so as to allow for flux cancellation at the center leg. On the other hand, $N_{56}$ and $N_{78}$ are also wound with opposite polarity on the center leg, and allows for the transformer $N_{12}$ and $N_{34}$ to not operate during its operation. 
 
@@ -215,7 +214,7 @@ To describe the magnetic state of the core, the superposition principle is used,
 
 Modes 1, 2, and 3 in Figs. \ref{fig:mode_1}-(c) cover the operation during the first active phase, while Modes 4, 5, and 6 in Figs. \ref{fig:mode_4}-(f) describe the operation during the second active phase. For the following modes, $B'_{\mathrm{o}_1}$, $B'_{\mathrm{o}_2}$, and $B'_{\mathrm{c}}$ represent the magnetic flux densities in the respective left, right, and center legs of the core caused by $N_{12}-N_{34}$, respectively, which are shown in Fig. \ref{fig:5b}. On the other hand, $B''_{\mathrm{o}_1}$, $B''_{\mathrm{o}_2}$, and $B''_{\mathrm{c}}$ represent the magnetic flux densities in the respective left, right, and center legs of the core caused by $N_{56}-N_{78}$, respectively, which are detailed visually in Fig. \ref{fig:5c}. The flux paths in the core caused by each transformer across the operational analysis illustrated in Fig. \ref{fig:operation_modes} are illustrated in Fig. \ref{fig:6}.
 
-\begin{figure}[b!]
+\begin{figure}[t!]
 \centering
         \subfloat[]{
         \includegraphics[width=0.6\columnwidth]{Figures_v2/Fig5a.pdf} 
@@ -321,7 +320,7 @@ Because the interleaved phases are symmetrical and share the same magnetizing in
 Since $D$, $L_{\mathrm{m}}$, and $f_{\mathrm{s}}$ are constant, $\langle i_{\mathrm{in}}(t) \rangle$ is directly proportional to $v_{\mathrm{in}}(t)$. Consequently, $ i_{\mathrm{in}}(t)$ inherently tracks the AC envelope, thus naturally achieving PFC. Because this fundamental electrical behavior remains identical to a standard interleaved topology operating in DCM, both the PFC and Total Harmonic Distortion (THD) performance are expected to match that of a conventional discrete setup.
 
 \subsection{Saturation Magnetic Flux Density Analysis}
-\begin{figure*}[b!]
+\begin{figure*}[t!]
     \centering
     % The figure spans two columns, so we use figure*
     % --- (a) Case 1 ---
@@ -385,6 +384,19 @@ B_{\mathrm{max}} = \left(1 + \frac{D - 0.5}{D}\right) B'_{\mathrm{max}}
 \end{equation}
 
 Because the flyback is interleaved, it is expected that the rectifier will primarily operate at $D \le 0.5$, which operates in the conditions set by Case 1 or 2.
+
+\subsection{Worst-Case Operating Conditions}
+To properly evaluate the converter and size the components across the universal input range ($v_{\text{in}}$ of $100\text{ V}_{\text{rms}}$ to $240\text{ V}_{\text{rms}}$), it is critical to identify the worst-case operating conditions. For both the switch current and the magnetic core, the lowest $V_{\text{in}}$ of $100\text{ V}_{\text{rms}}$ represents the practical worst-case scenario, whereas the highest $v_{\text{in}}$ of $240\text{ V}_{\text{rms}}$ dictates the worst-case switch voltage stress $v_{\text{ds}}$.
+
+This distinction is fundamentally driven by the necessary duty-cycle adjustment. In a two-phase interleaved flyback PFC rectifier operating in DCM and delivering constant output power $P_{\text{O}}$, the duty cycle $D$ is inversely proportional to $v_{\text{in}}$, which directly follows from \cite{ref8} and is expressed in \eqref{eq:27}:
+
+The duty cycle is calculated using \eqref{eq:27} \cite{ref8}.
+\begin{equation}
+\label{eq:27}
+D = \frac{2}{V_{\mathrm{in}_{\mathrm{pk}}}} \sqrt{\frac{0.5 L_{\mathrm{m}} P_{\mathrm{o}}}{T_{\mathrm{s}}}}
+\end{equation}
+
+From \eqref{eq:1} and \eqref{eq:3}, using \eqref{eq:27}, the absolute peak switch currents $i_{\mathrm{S}_{pk_1(\max)}}$ and $i_{\mathrm{S}_{pk_2(\max)}}$, which are at the peak of the AC line voltage cycle, remain constant across the entire input range. It also follows from \eqref{eq:2} and \eqref{eq:4} that the absolute peak magnetic flux densities $B'_{\mathrm{o}_{1_{pk}(\max)}}$, $B'_{\mathrm{o}_{2_{pk}(\max)}}$, and $B''_{\mathrm{c}_{pk(\max)}}$ remain constant across the entire $v_{\text{in}}$ range of $100\text{ V}_{\text{rms}}$ to $240\text{ V}_{\text{rms}}$. However, while the peaks remain constant, $D$ reaches its absolute maximum at the lowest $v_{\text{in}}$. Consequently, the RMS currents in the switches and transformer windings are maximized at the lowest $v_{\text{in}}$. Furthermore, accounting for the degradation of converter efficiency at lower line voltages, the system must draw greater input power to sustain the nominal $P_{\text{O}}$. This requirement inherently elevates the actual peak currents at a $V_{\text{in}}$ of $100\text{ V}_{\text{rms}}$, establishing it as the most severe operating condition for both current stress and magnetic core saturation.
 
 \subsection{Design Method of the Proposed Integrated Transformer}
 A turns ratio $n$ is selected based on the maximum voltage ratings of the switches. The maximum operating duty cycle $D$ is selected in consideration of the desired operation discussed in Section II-B. The magnetizing inductance, $L_{\mathrm{m}_1}=L_{\mathrm{m}_2}=L_{\mathrm{m}}$ is calculated from the circuit specifications. The saturation magnetic flux density per phase $B'_{\mathrm{max}}$ is calculated from the $B_{\mathrm{max}}$ given by the chosen core material, considering the maximum $D$. A core is chosen using the AP method. 
@@ -466,12 +478,8 @@ l_{\mathrm{mc}_{\mathrm{air}}} &= \frac{\mu_0 (\mu_r A_{\mathrm{mc}} R_{\mathrm{
 
 \section{Simulation Verification of Proposed Design}
 \subsection{Simulation Verification of the Proposed Design Method}
-To verify the operation of the integrated transformer, a simulation of the two-phase interleaved flyback rectifier was first performed in PLECS Standalone 4.9.4, with the diagram shown in Fig. \ref{fig:10a}. Clamped RCD Snubbers ($C_{\mathrm{sn}_1}, D_{\mathrm{sn}_1}, R_{\mathrm{sn}_1}$ and $C_{\mathrm{sn}_2}, D_{\mathrm{sn}_2}, R_{\mathrm{sn}_2}$) were also added for protection against surge voltage \cite{ref15, ref16} caused by the leakage inductance and the switch capacitance at the turn-off of $S_1$ and $S_2$. An integrated transformer, shown in Fig. 10(b), was also designed using the proposed method. The circuit and transformer were designed with the condition given by \eqref{eq:8}, and will thus be verified in this study. The specifications of the two-phase interleaved flyback rectifier and transformer for the simulation verification are shown in Tables \ref{tab:sim_rectifier} and \ref{tab:sim_transformer} respectively. The duty cycle is calculated using \eqref{eq:27} \cite{ref8}.
-\begin{equation}
-\label{eq:27}
-D = \frac{2}{V_{\mathrm{in}_{\mathrm{pk}}}} \sqrt{\frac{0.5 L_{\mathrm{m}} P_{\mathrm{o}}}{T_{\mathrm{s}}}}
-\end{equation}
-\begin{figure}[t!]
+To verify the operation of the integrated transformer, a simulation of the two-phase interleaved flyback rectifier was first performed in PLECS Standalone 4.9.4, with the diagram shown in Fig. \ref{fig:10a}. Clamped RCD Snubbers ($C_{\mathrm{sn}_1}, D_{\mathrm{sn}_1}, R_{\mathrm{sn}_1}$ and $C_{\mathrm{sn}_2}, D_{\mathrm{sn}_2}, R_{\mathrm{sn}_2}$) were also added for protection against surge voltage \cite{ref15, ref16} caused by the leakage inductance and the switch capacitance at the turn-off of $S_1$ and $S_2$. An integrated transformer, shown in Fig. 10(b), was also designed using the proposed method. The circuit and transformer were designed with the condition given by \eqref{eq:8}, and will thus be verified in this study. The specifications of the two-phase interleaved flyback rectifier and transformer for the simulation verification are shown in Tables \ref{tab:sim_rectifier} and \ref{tab:sim_transformer} respectively. 
+\begin{figure}[b!]
 \centering
 % (a) Top circuit
         \subfloat[]{
@@ -543,12 +551,54 @@ D = \frac{2}{V_{\mathrm{in}_{\mathrm{pk}}}} \sqrt{\frac{0.5 L_{\mathrm{m}} P_{\m
 \subsection{Simulation Results}
 Fig. \ref{fig:11} shows waveforms from the simulation testing of the two-phase interleaved flyback rectifier with the proposed transformer at 240 W. Key waveforms of the circuit were observed from the simulation, which include $v_{\mathrm{gs}_1}$ and $v_{\mathrm{gs}_2}$, $i_{L_{\mathrm{m}_1}}$ and $i_{L_{\mathrm{m}_2}}$, and the fluxes $B_{\mathrm{o}_1}$, $B_{\mathrm{o}_2}$, and $B_{\mathrm{c}}$. Similar waveforms to that of Fig. \ref{fig:4} have been observed, confirming that the system operates exactly as expected from the theoretical analysis. Flux cancellation is observed in the center leg during the time that $N_{56}-N_{78}$ is inactive, as denoted by the interval when $i_{L_{\mathrm{m}_2}} = 0$. The magnetizing currents $i_{L_{\mathrm{m}_1}}$ and $i_{L_{\mathrm{m}_2}}$ subside to zero prior to the subsequent phase reaching its peak. Moreover, the increase and decrease of fluxes were all linear, therefore confirming that there is indeed no magnetic coupling interference. This confirms the validity of the theoretical operation proposed in Section II.
 
-\begin{figure}[b!]
+\begin{figure}[t!]
     % Import the separate file here
     \includegraphics[width=\columnwidth]{Figures_v2/sim_plot_output.pdf}
     \caption{Key simulation waveforms of the proposed two-phase interleaved flyback rectifier at 240 W.}
     \label{fig:11}
 \end{figure}
+
+Furthermore, to substantiate the power factor correction capability of the proposed integrated structure, an open-loop performance analysis was conducted across the universal input range. To establish a rigorous baseline for this evaluation, a conventional two-phase interleaved flyback rectifier utilizing two separate, discrete transformers was also simulated. To ensure a strictly fair comparison, the physical parameters of the discrete transformers were precisely matched to the proposed design. The cross-sectional area of the discrete cores was matched to the smaller outer leg of the proposed core, $A_\mathrm{mo} = 117.624 \text{ mm}^2$. The discrete transformers were assigned identical turns ratios to the center leg transformer of the proposed integrated component 18:6, and their air gaps were tuned to maintain the exact same nominal magnetizing inductance $L_\mathrm{m}$. For the discrete cores, the magnetic path length was set to $66.21 \text{ mm}$ with an air gap of $0.677 \text{ mm}$. To extract clean grid-side AC waveforms and accurately evaluate harmonic distortion, a standard differential-mode EMI filter ($L_f = 100 \text{~\textmu H}$, $C_f = 1 \text{~\textmu F}$) was incorporated into both simulation models.
+
+As summarized in Table \ref{tab:pf_thd_comparison}, the proposed non-coupled integrated transformer maintains a high power factor of $>0.95$ and low current THD across various input voltages and load conditions. Crucially, the fundamental decoupling of the magnetic structure ensures that its PF and THD performance remains nearly identical to that of the conventional discrete implementation and aditionally validates the claims of inherent PFC operation in DCM in Section II. To provide a clear visual reference of this capability, the simulated PFC waveforms at the operating points of $v_\mathrm{in}$, $V_\mathrm{O}$, and $P_\mathrm{O}$ of 100 V$_\mathrm{rms}$, 48 V, and 100 W, and 240 V$_\mathrm{rms}$, 48 V, and 100 W  are shown in Fig. \ref{fig:pfca} and \ref{fig:pfcb}.
+
+\begin{table}[htbp]
+    \caption{Power Factor and THD Comparison (Open-Loop Simulation)}
+    \centering
+    \renewcommand{\arraystretch}{1.25} % Adds vertical breathing room to all rows
+    \begin{tabular}{c c c c c}
+        \hline
+        \multirow{2}{*}{\begin{tabular}[c]{@{}c@{}}\textbf{Operating Point} \\ ($V_{\text{in}}$, $V_{\text{out}}$, $P_{\text{O}}$)\end{tabular}} & \multicolumn{2}{c}{\textbf{Power Factor}} & \multicolumn{2}{c}{\textbf{Current THD (\%)}} \\
+        \cline{2-5}
+        & \textbf{Conv.} & \textbf{Prop.} & \textbf{Conv.} & \textbf{Prop.} \\
+        \hline \hline
+        100 V$_{\text{rms}}$, 48 V, 240 W & 0.9991 & 0.9987 & 2.39 & 2.19 \\
+        240 V$_{\text{rms}}$, 48 V, 240 W & 0.9758 & 0.9641 & 4.34 & 4.02 \\
+        100 V$_{\text{rms}}$, 20 V, 100 W & 0.9918 & 0.9932 & 3.42 & 2.43 \\
+        100 V$_{\text{rms}}$, 12 V, 45 W  & 0.9724 & 0.9567 & 3.59 & 3.51 \\
+        \hline
+    \end{tabular}
+    \label{tab:pf_thd_comparison}
+\end{table}
+
+\begin{figure}[htbp]
+\centering
+% (a) Top circuit
+        \subfloat[]{
+        \includegraphics[width=\columnwidth]{Figures_v2/sim_plot_output_100.pdf} % Make sure this file exists
+        \label{fig:pfca}
+        }
+        \\ % This double backslash forces the next image to the line below (vertical stack)
+        % (b) Middle circuit
+        \subfloat[]{
+        \includegraphics[width=\columnwidth]{Figures_v2/sim_plot_output_240.pdf}
+        \label{fig:pfcb}
+        }
+        
+        \caption{Key PFC Waveforms with $v_\mathrm{in}$, $V_\mathrm{O}$, and $P_\mathrm{O}$ of: (a) 100 V$_\mathrm{rms}$, 48 V, and 240 W and (b) 240 V$_\mathrm{rms}$, 48 V, and 240 W.}
+        \label{fig:pfcwaveforms}
+\end{figure}
+
 
 \section{Size Reduction Effect of the Proposed Transformer}
 This section examines the size reduction effect by the integrated transformer. For this study, the conventional transformer is assumed to be two separate transformers that facilitate isolation between the primary and secondary side. The conventional transformer and its windings is represented in Fig.~\ref{fig:13a}. The proposed integrated transformer and its windings is represented in Fig.~\ref{fig:13b}. The volume is compared by using the AP method. The AP method utilizes the product between the core cross-sectional area $A_{\mathrm{c}}$, and the window area $A_{\mathrm{w}}$, and is a fundamental core size for the application \cite{ref21}. It can be expressed both in terms of the transformer geometric parameters and the circuit parameters, as will be demonstrated in the following analysis.
@@ -839,6 +889,7 @@ Fig. \ref{fig:16a} shows the 100 W experimental waveforms at 4 ms/div from the t
 Two distinct parasitic resonant behaviors can be observed in the $v_\mathrm{ds}$ waveforms in Fig.~\ref{fig:16b} and Fig.~\ref{fig:16c} according to the operational dynamics of the flyback converter. The same phenomenon can also be observed in Fig.~\ref{fig:16d} for one-phase drive. A high-frequency ringing occurs immediately at switch turn-off, driven by the resonance between the leakage inductance of the transformer and the parasitic output capacitance $C_\mathrm{oss}$ of the switches. This voltage stress is mitigated by the implemented primary-side RCD snubbers. Second, a lower-frequency oscillation appears when the secondary diode currents $i_{\mathrm{D}_1}$ and $i_{\mathrm{D}_2}$ reach zero, indicating complete transformer demagnetization. During this interval, the main magnetizing inductance of the active transformer resonates with $C_\mathrm{oss}$ until the next switching cycle initiates. Nevertheless, these parasitic behaviors do not interfere with the non-coupled operation of the proposed transformer.
 
 % --- TABLE VI: Rectifier Specifications ---
+
 
 
 

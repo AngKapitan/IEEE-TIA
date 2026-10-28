@@ -3,7 +3,7 @@ import numpy as np
 import sys
 
 # 1. Load the original screenshot (Using relative path so it doesn't crash)
-img = cv2.imread('zoomin240.png')
+img = cv2.imread('zoomin32.5.png')
 
 if img is None:
     print("Error: Could not find 'zoomin32.5.png'. Make sure it is in the same folder as this script!")
@@ -29,7 +29,7 @@ layer_color = np.full_like(img, 255)
 layer_color[mask_color] = img[mask_color]
 
 # 5. Thicken the COLOR layers aggressively
-kernel_heavy = np.ones((3, 3), np.uint8)
+kernel_heavy = np.ones((4, 4), np.uint8)
 # Erode on a white background makes the colored lines thicker
 layer_color_thick = cv2.erode(layer_color, kernel_heavy, iterations=1)
 
@@ -76,5 +76,5 @@ final_black[trace_only_mask_thick == 255] = (0, 0, 0)
 # Merge the modified black layer and the thickened color layer
 final_img = cv2.min(final_black, layer_color_thick)
 
-cv2.imwrite('240_thick.png', final_img)
+cv2.imwrite('32.5_thick2.png', final_img)
 print("Processing complete! Grid is thin, traces are thick. Saved as '32.5_thick.png'.")

@@ -1,108 +1,98 @@
-% Requires \usepackage{graphicx} and \usepackage{pgfplots}
-\noindent
-\resizebox{\columnwidth}{!}{%
-\begin{tikzpicture}
-    \begin{groupplot}[
-        group style={
-            group size=1 by 7,
-            vertical sep=0.1cm,
-            x descriptions at=edge bottom,
-            xticklabels at=edge bottom
-        },
-        width=\columnwidth,
-        height=2.5cm,
-        xmin=0.428957, xmax=0.428982,
-        enlarge x limits=false,
-        xlabel={Time [s]},
-        xticklabel style={
-            /pgf/number format/fixed, 
-            /pgf/number format/precision=5,
-            font=\tiny
-        },
-        yticklabel style={font=\tiny},
-        grid=both,
-        grid style={dotted, gray!60},
-        minor tick num=1,
-        no markers,
-        % --- FIX: ABSOLUTE POSITIONING ---
-        ylabel style={
-            rotate=-90,
-            % Place exactly at the axis line (0, 0.5) then shift left by a FIXED amount
-            at={(axis description cs:0, 0.5)}, 
-            xshift=-3.2em, % Fixed distance (adjust -3.2em if needs to be closer/farther)
-            anchor=east,
-            align=right,
-            font=\scriptsize, 
-            text width=2cm
-        },
-        every axis plot/.append style={thick, line join=round}
-    ]
+import matplotlib.pyplot as plt
+import pandas as pd
+import numpy as np
+import os
+import sys
+import matplotlib.ticker as ticker
+
+# --- Configuration & Path Locking ---
+if '__file__' in globals():
+    base_dir = os.path.dirname(os.path.abspath(__file__))
+else:
+    base_dir = os.getcwd()
+
+csv_file = os.path.join(base_dir, '100_48_240.csv')
+# CHANGED: Output file is now a .pdf
+output_pdf = os.path.join(base_dir, 'sim_plot_output_100.pdf')
+
+# LaTeX-style math font settings for Matplotlib
+plt.rcParams.update({
+    "text.usetex": False, 
+    "mathtext.fontset": "cm", 
+    "font.family": "serif",
+    "axes.labelsize": 22,
+    "xtick.labelsize": 9,
+    "ytick.labelsize": 9,
+})
+
+# --- Data Loading ---
+if os.path.exists(csv_file):
+    print(f"Found CSV at: {csv_file}")
+    df = pd.read_csv(csv_file)
+    df = df.apply(pd.to_numeric, errors='coerce').dropna() 
     
-    % --- PLOT 1: Gate Signal 1 ---
-    \nextgroupplot[
-        ylabel={$v_{\mathrm{gs}_1}$},
-        ymin=-2, ymax=17,
-        ytick={0,15},
-        yticklabels={0, [V]\,15},
-        y filter/.code={\pgfmathparse{\pgfmathresult*15}\pgfmathresult}
-    ]
-    \addplot [blue] table [x index=0, y index=1, col sep=comma] {Figures_v2/sim_data_2.csv};
+    time = df.iloc[:, 0]
+    v_in = df.iloc[:, 1]
+    i_in = df.iloc[:, 2]
+    v_o =  df.iloc[:, 3]
+    v_gs1 = df.iloc[:, 4] * 15  
+    v_gs2 = df.iloc[:, 5] * 15
+    v_ds1 = df.iloc[:, 6]  
+    v_ds2 = df.iloc[:, 7]
+    i_s1 = df.iloc[:, 8]  
+    i_s2 = df.iloc[:, 9]
+    i_d1 = df.iloc[:, 10]
+    i_d2 = df.iloc[:, 11]
+else:
+    print(f"ERROR: Could not find {csv_file}")
+    print("Generating dummy data for demonstration...")
+    time = np.linspace(0.428957, 0.428982, 500)
+    v_gs1 = (np.sin(time * 1e6) > 0).astype(float) * 15
+    v_gs2 = (np.cos(time * 1e6) > 0).astype(float) * 15
+    i_lm1 = np.sin(time * 1e6) * 4 + 4
+    i_lm2 = np.cos(time * 1e6) * 4 + 4
+    b_o1 = np.sin(time * 1e6) * 0.1 + 0.1
+    b_o2 = np.sin(time * 1e6) * 0.2
+    b_c = np.cos(time * 1e6) * 0.1 + 0.1
 
-    % --- PLOT 2: Gate Signal 2 ---
-    \nextgroupplot[
-        ylabel={$v_{\mathrm{gs}_2}$},
-        ymin=-2, ymax=17,
-        ytick={0,15},
-        yticklabels={0, [V]\,15},
-        y filter/.code={\pgfmathparse{\pgfmathresult*15}\pgfmathresult}
-    ]
-    \addplot [red, dashed] table [x index=0, y index=2, col sep=comma] {Figures_v2/sim_data_2.csv};
+# --- Figure Setup ---
+fig, axs = plt.subplots(7, 1, figsize=(8, 10), sharex=True)
+# Increased hspace slightly to leave room for the unit labels at the top of each axis
+plt.subplots_adjust(hspace=0.25) 
 
-    % --- PLOT 3: Inductor Current 1 ---
-    \nextgroupplot[
-        ylabel={$i_{L_{\mathrm{m}_1}}$},
-        ymin=-2, ymax=9,
-        ytick={0, 4, 8},
-        yticklabels={0, 4, [A]\,8}
-    ]
-    \addplot [blue] table [x index=0, y index=3, col sep=comma] {Figures_v2/sim_data_2.csv};
-
-    % --- PLOT 4: Inductor Current 2 ---
-    \nextgroupplot[
-        ylabel={$i_{L_{\mathrm{m}_2}}$},
-        ymin=-2, ymax=9,
-        ytick={0, 4, 8},
-        yticklabels={0, 4, [A]\,8}
-    ]
-    \addplot [red] table [x index=0, y index=4, col sep=comma] {Figures_v2/sim_data_2.csv};
-
-    % --- PLOT 5: Outer Leg Flux 1 ---
-    \nextgroupplot[
-        ylabel={$B_{\mathrm{o}_1}$},
-        ymin=-0.1, ymax=0.3,
-        ytick={0, 0.2},
-        yticklabels={0, [T]\,0.2}
-    ]
-    \addplot [black] table [x index=0, y index=5, col sep=comma] {Figures_v2/sim_data_2.csv};
-
-    % --- PLOT 6: Outer Leg Flux 2 ---
-    \nextgroupplot[
-        ylabel={$B_{\mathrm{o}_2}$},
-        ymin=-0.3, ymax=0.3,
-        ytick={-0.2, 0, 0.2},
-        yticklabels={-0.2, 0, [T]\,0.2}
-    ]
-    \addplot [black] table [x index=0, y index=6, col sep=comma] {Figures_v2/sim_data_2.csv};
-
-    % --- PLOT 7: Center Leg Flux ---
-    \nextgroupplot[
-        ylabel={$B_{\mathrm{c}}$},
-        ymin=-0.1, ymax=0.3,
-        ytick={0, 0.2},
-        yticklabels={0, [T]\,0.2}
-    ]
-    \addplot [black] table [x index=0, y index=7, col sep=comma] {Figures_v2/sim_data_2.csv};
+# --- Shared Formatting Function ---
+def format_axis(ax, ylabel, unit, ymin, ymax, yticks, yticklabels):
+    ax.set_ylabel(ylabel, rotation=0, ha='right', va='center')
+    ax.set_ylim(ymin, ymax)
+    ax.set_yticks(yticks)
+    ax.set_yticklabels(yticklabels)
+    ax.grid(True, which='both', linestyle=':', color='gray', alpha=0.6)
     
-    \end{groupplot}
-\end{tikzpicture}
-}
+    # Hide top and right spines
+    ax.spines['top'].set_visible(False)
+    ax.spines['right'].set_visible(False)
+    
+    # Add the unit at the tip of the Y-axis
+    # (x=0.0 is the y-axis, y=1.05 is slightly above the top limit of the y-axis)
+    ax.text(0.0, 1.05, unit, transform=ax.transAxes, ha='center', va='bottom', fontsize=8)
+
+    # --- Plot 1: Gate Signal 1 ---
+axs[0].plot(time, v_in, color='black', linewidth=2)
+format_axis(axs[0], r'$v_{\mathrm{in}}$', '[V]', -400, 0, 400, [-400, 0, 400], ['-400', 0, '400'])
+  # --- Plot 1: Gate Signal 1 ---
+axs[1].plot(time, i_in, color='green', linewidth=2)
+format_axis(axs[0], r'$i_{\mathrm{in}}$', '[A]', -4, 0, 4, [-4, 0, 4], ['-4', 0, '4'])
+  # --- Plot 1: Gate Signal 1 ---
+axs[2].plot(time, i_in, color='green', linewidth=2)
+format_axis(axs[0], r'$i_{\mathrm{in}}$', '[A]', -4, 0, 4, [-4, 0, 4], ['-4', 0, '4'])
+
+axs[-1].set_xlabel('time [s]', fontsize=12)
+axs[-1].xaxis.set_major_formatter(ticker.FormatStrFormatter('%.5f'))
+
+# Align the Y-axis labels
+fig.align_ylabels(axs)
+
+# --- Export ---
+# CHANGED: format='pdf' and using output_pdf variable
+plt.savefig(output_pdf, format='pdf', bbox_inches='tight')
+print(f"Successfully saved figure to {output_pdf}")
